@@ -1,0 +1,407 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:jsf="http://xmlns.jcp.org/jsf"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+
+<h:head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Amy&#039;s Yard Referral</title>
+
+    <meta name="description" content="Amy&#039;s Yard Referral Form"/>
+    <meta name="author" content="Watford Consulting Ltd."/>
+    <link rel="icon" href="favicon.ico"/>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+    <link rel="canonical" href="http://awf.watfordconsulting.com"/>
+
+    <link href="css/awfreferral.css" rel="stylesheet"/>
+
+</h:head>
+
+<h:body>
+    <div class="container">
+        <h:form styleClass="form-horizontal">
+            <h:messages/>
+            <fieldset>
+
+                <legend>Details of the young person you would like to refer to the project</legend>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantName" styleClass="col-md-4 control-label">Full Name</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="applicantName" styleClass="form-control input-md" required="true"
+                                     p:placeholder="Full Name"
+                                     value="#{referral.applicantName}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantDob" styleClass="col-md-4 control-label">Date of Birth</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="applicantDob" styleClass="form-control input-md" required="true"
+                                     p:placeholder="Date of Birth"
+                                     value="#{referral.applicantDateOfBirth}" placeholder="Date of Birth">
+                            <f:convertDateTime pattern="dd/MM/yyyy"/>
+                        </h:inputText>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantGender" styleClass="col-md-4 control-label">Gender</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:selectOneRadio id="applicantGender"
+                                          layout="pageDirection"
+                                          value="#{referral.applicantGender}"
+                                          styleClass="radio">
+                            <f:selectItem itemValue="Male" itemLabel="Male"/>
+                            <f:selectItem itemValue="Female" itemLabel="Female"/>
+                            <f:selectItem itemValue="Transgender" itemLabel="Transgender"/>
+                            <f:selectItem itemValue="Non-binary" itemLabel="Non-binary"/>
+                        </h:selectOneRadio>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantAddress" styleClass="col-md-4 control-label">Address</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputTextarea id="applicantAddress" styleClass="form-control input-md" required="true"
+                                         p:placeholder="Address"
+                                         rows="5" value="#{referral.applicantAddress}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantTelephone"
+                                   class="col-md-4 control-label">Telephone Number</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="applicantTelephone" styleClass="form-control input-md"
+                                     p:placeholder="Telephone Number" value="#{referral.applicantTelephone}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicantEmail"
+                                   class="col-md-4 control-label">Email Address</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="applicantEmail" styleClass="form-control input-md"
+                                     p:placeholder="Email address" value="#{referral.applicantEmail}"/>
+                    </div>
+                </div>
+
+            </fieldset>
+
+            <fieldset>
+                <legend>Details of your role and organisation</legend>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerName"
+                                   class="col-md-4 control-label">Name</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="referrerName" styleClass="form-control input-md"
+                                     p:placeholder="Name" value="#{referral.referrerName}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerJobTitle"
+                                   class="col-md-4 control-label">Job Title</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="referrerJobTitle" styleClass="form-control input-md"
+                                     p:placeholder="Job Title" value="#{referral.referrerJobTitle}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerOrganisation"
+                                   class="col-md-4 control-label">Organisation</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="referrerOrganisation" styleClass="form-control input-md"
+                                     p:placeholder="Organisation" value="#{referral.referrerOrganisation}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerAddress" styleClass="col-md-4 control-label">Address</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputTextarea id="referrerAddress" styleClass="form-control input-md" required="true"
+                                         p:placeholder="Address"
+                                         rows="5" value="#{referral.referrerAddress}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerTelephone"
+                                   class="col-md-4 control-label">Telephone Number</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="referrerTelephone" styleClass="form-control input-md"
+                                     p:placeholder="Telephone Number" value="#{referral.referrerTelephone}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="referrerEmail"
+                                   class="col-md-4 control-label">Email Address</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:inputText id="referrerEmail" styleClass="form-control input-md"
+                                     p:placeholder="Email Address" value="#{referral.referrerEmail}"/>
+                    </div>
+                </div>
+            </fieldset>
+
+
+            <fieldset>
+                <legend>Please tell us about the young person you are referring:</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="aboutApplicant" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.aboutApplicant}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>How long have you been working with them?</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="howLongWorking" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.howLongWorking}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>How were they referred to your organisation?</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="howWereTheyReferred" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.howReferred}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>How are you currently supporting them, and with what areas of their life?</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="howSupportingApplicant" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.howSupportingApplicant}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Do they have any additional needs we should be aware of?</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="anyAdditionalNeeds" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.anyAdditionalNeeds}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Do any of the following apply?</legend>
+
+                <div class="form-group">
+                    <h:outputLabel for="applicableCircumstances"
+                                   class="col-md-4 control-label">Select any that apply</h:outputLabel>
+                    <div class="col-md-6">
+                        <h:selectManyCheckbox id="applicableCircumstances" value="#{referral.applicableCircumstances}"
+                                              layout="pageDirection" styleClass="checkbox">
+                            <f:selectItem itemValue="Homelessness" itemLabel="Homelessness"/>
+                            <f:selectItem itemValue="Substance Misuse" itemLabel="Substance Misuse"/>
+                            <f:selectItem itemValue="Eating Disorder" itemLabel="Eating Disorder"/>
+                            <f:selectItem itemValue="Unemployed" itemLabel="Unemployed"/>
+                            <f:selectItem itemValue="History of Offending" itemLabel="History of Offending"/>
+                            <f:selectItem itemValue="Mental Health Issues" itemLabel="Mental Health Issues"/>
+                            <f:selectItem itemValue="Self Harm" itemLabel="Self Harm"/>
+                            <f:selectItem itemValue="Additional Learning Needs" itemLabel="Additional Learning Needs"/>
+                            <f:selectItem itemValue="Not in Training" itemLabel="Not in Training"/>
+                            <f:selectItem itemValue="Other" itemLabel="Other"/>
+                        </h:selectManyCheckbox>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label"
+                           for="specificDetails">Please provide specific details so we are
+                        able to support individual needs</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="specificDetails" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.circumstanceSpecificDetails}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="otherProfessionalSupport">
+                        Are they accessing any other professional support?
+                    </label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="otherProfessionalSupport" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.otherProfessionalSupport}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label"
+                           for="prescribedMedication">Do they take any prescribed medication?
+                        If so please provide details</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="prescribedMedication" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.prescribedMedication}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Emergency Contact Details</legend>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="emergencyContactName">Name</label>
+                    <div class="col-md-4">
+                        <h:inputText id="emergencyContactName" styleClass="form-control input-md"
+                                     p:placeholder="Name"
+                                     value="#{referral.emergencyContactName}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="emergencyContactTelephone">Contact Number</label>
+                    <div class="col-md-4">
+                        <h:inputText id="emergencyContactTelephone" styleClass="form-control input-md"
+                                     p:placeholder="Telephone"
+                                     value="#{referral.emergencyContactTelephone}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="emergencyContactMobile">Mobile Number</label>
+                    <div class="col-md-4">
+                        <h:inputText id="emergencyContactMobile" styleClass="form-control input-md"
+                                     p:placeholder="Mobile"
+                                     value="#{referral.emergencyContactMobile}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="emergencyContactEmail">Email</label>
+                    <div class="col-md-4">
+                        <h:inputText id="emergencyContactEmail" styleClass="form-control input-md"
+                                     p:placeholder="Email"
+                                     value="#{referral.emergencyContactEmail}"/>
+                    </div>
+                </div>
+
+                <!-- Text input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="emergencyContactRelationship">Relationship</label>
+                    <div class="col-md-4">
+                        <h:inputText id="emergencyContactRelationship" styleClass="form-control input-md"
+                                     p:placeholder="Relationship"
+                                     value="#{referral.emergencyContactRelationship}"/>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Please tell us about their musical experience/talent to date</legend>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="experienceInstruments">Instruments</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="experienceInstruments" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.experienceInstruments}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="experienceStudio">Studio / Production</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="experienceStudio" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.experienceStudio}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="experienceSongwriting">Songwriting</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="experienceSongwriting" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.experienceSongwriting}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="experienceLivePerformance">Live Performance</label>
+                    <div class="col-md-4">
+                        <h:inputTextarea id="experienceLivePerformance" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.experienceLivePerformance}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Please tell us why you feel they are ready for this opportunity</legend>
+
+                <div class="form-group">
+                    <div class="col-md-6 col-md-offset-2">
+                        <h:inputTextarea id="whyReady" styleClass="form-control input-md"
+                                         rows="5" value="#{referral.whyReady}">
+                        </h:inputTextarea>
+                    </div>
+                </div>
+            </fieldset>
+            <blockquote>
+                <h4>
+                    Please Note: You must have permission to share this information with us from the individual you are referring.
+                    No personal information given to AWF will be passed to other agencies and is for internal use only, with the purpose of supporting programme participants.
+                </h4>
+            </blockquote>
+
+            <h:commandButton id="submit" value="Submit" action="thanks"/>
+        </h:form>
+    </div>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script type="application/javascript" src="js/jquery-1.10.2.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script type="application/javascript" src="js/bootstrap.min.js"></script>
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <script type="application/javascript" src="js/ie10-viewport-bug-workaround.js"></script>
+
+    <script type="application/javascript" src="js/iframeResizer.contentWindow.js"></script>
+</h:body>
+
+</html>
