@@ -3,6 +3,7 @@ package com.foomoo.awf;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
 public class Referral implements Serializable {
 
     private String applicantName;
-    private Date applicantDateOfBirth;
+    private LocalDate applicantDateOfBirth;
     private String applicantGender;
     private String applicantAddress;
     private String applicantTelephone;
@@ -59,11 +60,11 @@ public class Referral implements Serializable {
         this.applicantName = applicantName;
     }
 
-    public Date getApplicantDateOfBirth() {
+    public LocalDate getApplicantDateOfBirth() {
         return applicantDateOfBirth;
     }
 
-    public void setApplicantDateOfBirth(final Date applicantDateOfBirth) {
+    public void setApplicantDateOfBirth(final LocalDate applicantDateOfBirth) {
         this.applicantDateOfBirth = applicantDateOfBirth;
     }
 
