@@ -12,13 +12,20 @@ import java.time.format.DateTimeFormatter;
  */
 public class ValidationConfig {
 
+    /**
+     * Maximum accepted date of birth for applicants in YYYY-MM-DD format.
+     */
     public static final LocalDate APPLICANT_DOB_MAX;
+
+    /**
+     * Validation error message to display if an applicant date of birth is given which exceeds the maximum permitted.
+     */
     public static final String APPLICANT_VALIDATION_FAIL_MSG;
 
     private static final String PROPS_FILE_NAME = "validation.properties";
 
     static {
-        Configurations configs = new Configurations();
+        final Configurations configs = new Configurations();
         try {
             final PropertiesConfiguration properties = configs.properties(PROPS_FILE_NAME);
 

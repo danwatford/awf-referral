@@ -10,7 +10,7 @@
     <name>AWF Referral Webapp</name>
 
     <properties>
-        <version.wildfly.swarm>2017.7.0</version.wildfly.swarm>
+        <version.wildfly.swarm>2017.8.1</version.wildfly.swarm>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <failOnMissingWebXml>false</failOnMissingWebXml>
@@ -75,6 +75,10 @@
         <dependency>
             <groupId>org.wildfly.swarm</groupId>
             <artifactId>jsf</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.wildfly.swarm</groupId>
+            <artifactId>mail</artifactId>
         </dependency>
     </dependencies>
 
