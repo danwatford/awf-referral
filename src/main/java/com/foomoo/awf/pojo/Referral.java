@@ -1,10 +1,13 @@
 package com.foomoo.awf.pojo;
 
+import com.foomoo.awf.render.LocalDateAdapter;
+
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,6 +15,7 @@ import java.util.List;
  */
 @Named
 @SessionScoped
+@XmlRootElement
 public class Referral implements Serializable {
 
     private String applicantName;
@@ -60,6 +64,7 @@ public class Referral implements Serializable {
         this.applicantName = applicantName;
     }
 
+    @XmlJavaTypeAdapter(value = LocalDateAdapter.class)
     public LocalDate getApplicantDateOfBirth() {
         return applicantDateOfBirth;
     }

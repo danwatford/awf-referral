@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<referral>
+    <applicantName>Applicant Name</applicantName>
+    <applicantDateOfBirth>1999-01-12</applicantDateOfBirth>
+    <applicantGender>Female</applicantGender>
+    <applicantAddress>Applicant address
+        second line</applicantAddress>
+    <applicantTelephone>01234 123456</applicantTelephone>
+    <applicantEmail>applicant@example.com</applicantEmail>
+
+    <referrerName>Referrer Name</referrerName>
+    <referrerJobTitle>Referrer Job Title</referrerJobTitle>
+    <referrerOrganisation>Referrer Organisation</referrerOrganisation>
+    <referrerAddress>Referrer address
+        second line</referrerAddress>
+    <referrerTelephone>06789 345678</referrerTelephone>
+    <referrerEmail>referrer@example.com</referrerEmail>
+</referral>

@@ -10,8 +10,9 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
-@FacesConverter(value="localDateConverter")
+@FacesConverter(value = "localDateConverter")
 public class LocalDateConverter implements Converter {
+
     @Override
     public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
         try {
@@ -20,7 +21,7 @@ public class LocalDateConverter implements Converter {
             try {
                 return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/M/yyyy"));
             } catch (final DateTimeParseException dtpe2) {
-                throw new ConverterException(new FacesMessage("Cannot convert String "+ value + " to date."));
+                throw new ConverterException(new FacesMessage("Cannot convert String " + value + " to date."));
             }
         }
     }

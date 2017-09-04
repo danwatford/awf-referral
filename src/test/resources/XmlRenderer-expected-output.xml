@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<referral>
+    <applicantAddress>Applicant address
+second line</applicantAddress>
+    <applicantDateOfBirth>1999-01-12</applicantDateOfBirth>
+    <applicantGender>Female</applicantGender>
+    <applicantName>Applicant Name</applicantName>
+    <referrerAddress>Referrer address
+second line</referrerAddress>
+    <referrerName>Referrer Name</referrerName>
+</referral>
