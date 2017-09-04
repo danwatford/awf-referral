@@ -1,4 +1,6 @@
-package com.foomoo.awf;
+package com.foomoo.awf.validators;
+
+import com.foomoo.awf.config.ValidationConfig;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -8,7 +10,7 @@ import javax.faces.validator.Validator;
 import javax.faces.validator.ValidatorException;
 import java.time.LocalDate;
 
-import static com.foomoo.awf.ValidationConfig.APPLICANT_VALIDATION_FAIL_MSG;
+import static com.foomoo.awf.config.ValidationConfig.APPLICANT_VALIDATION_FAIL_MSG;
 
 @FacesValidator("applicantDobValidator")
 public class ApplicantDobValidator implements Validator {

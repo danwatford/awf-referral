@@ -1,4 +1,4 @@
-package com.foomoo.awf;
+package com.foomoo.awf.converters;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;

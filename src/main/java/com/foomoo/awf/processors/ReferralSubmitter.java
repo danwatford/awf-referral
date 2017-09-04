@@ -1,13 +1,13 @@
-package com.foomoo.awf;
+package com.foomoo.awf.processors;
 
-import org.wildfly.swarm.mail.MailFraction;
+import com.foomoo.awf.config.MailConfig;
+import com.foomoo.awf.pojo.Referral;
 
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.*;
-import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.Date;
@@ -22,11 +22,15 @@ public class ReferralSubmitter {
     @Inject
     Referral referral;
 
+    @Inject
+    ConfirmationHandler confirmationHandler;
+
     @Resource(mappedName = "java:/mail/awf-mail")
     private Session session;
 
     public String submit() throws MessagingException {
 
+        confirmationHandler.sendConfirmation("dan-conf@foomoo.com");
 
         final MimeMessage message = new MimeMessage(session);
         message.addFrom(InternetAddress.parse(MailConfig.FROM));

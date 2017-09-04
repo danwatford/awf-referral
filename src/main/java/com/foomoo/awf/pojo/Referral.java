@@ -1,4 +1,4 @@
-package com.foomoo.awf;
+package com.foomoo.awf.pojo;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
