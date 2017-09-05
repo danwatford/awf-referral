@@ -13,24 +13,327 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4-portrait">
                 <fo:flow flow-name="xsl-region-body">
+                    <fo:block text-align="center" space-before="8pt" space-after="8pt">
+                        Amy's Yard Referral Form
+                    </fo:block>
+                    <fo:block>Applicant Details</fo:block>
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Name</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantName"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Date of Birth</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantDateOfBirth"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Gender</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantGender"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Address</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantAddress"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Telephone</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantTelephone"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Email</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="applicantEmail"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+
+                    <fo:block>Referrer Details</fo:block>
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Name</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerName"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Job Title</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerJobTitle"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Organisation</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerOrganisation"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Address</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerAddress"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Telephone</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerTelephone"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Email</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="referrerEmail"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+
                     <fo:block>
-                        Name: <xsl:value-of select="applicantName"/>
+                        Please tell us about the young person you are referring:
                     </fo:block>
                     <fo:block>
-                        Date of Birth: <xsl:value-of select="applicantDateOfBirth"/>
+                        <xsl:value-of select="aboutApplicant"/>
+                    </fo:block>
+
+                    <fo:block>
+                        How long have you been working with them?
                     </fo:block>
                     <fo:block>
-                        Gender: <xsl:value-of select="applicantGender"/>
+                        <xsl:value-of select="howLongWorking"/>
+                    </fo:block>
+
+                    <fo:block>
+                        How were they referred to your organisation?
                     </fo:block>
                     <fo:block>
-                        <xsl:value-of select="applicantAddress"/>
+                        <xsl:value-of select="howReferred"/>
+                    </fo:block>
+
+                    <fo:block>
+                        How are you currently supporting them, and with what areas of their life?
                     </fo:block>
                     <fo:block>
-                        <xsl:value-of select="applicantTelephone"/>
+                        <xsl:value-of select="howSupportingApplicant"/>
+                    </fo:block>
+
+                    <fo:block>
+                        Do they have any additional needs we should be aware of?
                     </fo:block>
                     <fo:block>
-                        <xsl:value-of select="applicantEmail"/>
+                        <xsl:value-of select="anyAdditionalNeeds"/>
                     </fo:block>
+
+                    <fo:block>
+                        Applicable Circumstances
+                    </fo:block>
+                    <fo:list-block>
+                        <xsl:for-each select="applicableCircumstances">
+                            <fo:list-item>
+                                <fo:list-item-label>
+                                    <fo:block/>
+                                </fo:list-item-label>
+                                <fo:list-item-body>
+                                    <fo:block>
+                                        <xsl:value-of select="node()"/>
+                                    </fo:block>
+                                </fo:list-item-body>
+                            </fo:list-item>
+                        </xsl:for-each>
+                    </fo:list-block>
+
+                    <fo:block>
+                        Please provide specific details so we are able to support individual needs:
+                    </fo:block>
+                    <fo:block>
+                        <xsl:value-of select="circumstanceSpecificDetails"/>
+                    </fo:block>
+
+                    <fo:block>
+                        Are they accessing any other professional support?
+                    </fo:block>
+                    <fo:block>
+                        <xsl:value-of select="otherProfessionalSupport"/>
+                    </fo:block>
+
+                    <fo:block>
+                        Do they take any prescribed medication? If so please provide details:
+                    </fo:block>
+                    <fo:block>
+                        <xsl:value-of select="prescribedMedication"/>
+                    </fo:block>
+
+                    <fo:block>Emergency Contact</fo:block>
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Name</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="emergencyContactName"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Telephone</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="emergencyContactTelephone"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Mobile</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="emergencyContactMobile"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Email</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="emergencyContactEmail"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>Relationship</fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="emergencyContactRelationship"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+
+                    <fo:block>
+                        Please tell us about their musical experience/talent to date
+                    </fo:block>
+                    <fo:table>
+                        <fo:table-body>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        Instruments
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="experienceInstruments"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        Studio/Production
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="experienceStudio"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        Songwriting
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="experienceSongwriting"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                            <fo:table-row>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        Live Performance
+                                    </fo:block>
+                                </fo:table-cell>
+                                <fo:table-cell>
+                                    <fo:block>
+                                        <xsl:value-of select="experienceLivePerformance"/>
+                                    </fo:block>
+                                </fo:table-cell>
+                            </fo:table-row>
+                        </fo:table-body>
+                    </fo:table>
+
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>

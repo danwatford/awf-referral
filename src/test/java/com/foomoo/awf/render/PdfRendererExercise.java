@@ -1,5 +1,7 @@
 package com.foomoo.awf.render;
 
+import com.foomoo.awf.pojo.Referral;
+import com.foomoo.awf.pojo.ReferralPopulator;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -11,17 +13,18 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 @Tag("integration")
-class PdfRendererIntegrationTest {
+class PdfRendererExercise {
 
     /**
-     * Tests that the PDF Renderer can be called, triggering it to read any required configuration files.
+     * Exercises the PDF Renderer, triggering it to read any required configuration files.
      */
     @Test
     public void rendersReferral() throws IOException {
 
-        final String xmlInput = IOUtils.toString(Thread.currentThread()
-                                                       .getContextClassLoader()
-                                                       .getResourceAsStream("PdfRenderer-input.xml"), StandardCharsets.UTF_8);
+        final Referral referral = new Referral();
+        ReferralPopulator.populateReferral(referral);
+
+        final String xmlInput = new XmlReferralRenderer().render(referral);
 
         final PdfRenderer pdfRenderer = new PdfRenderer();
 

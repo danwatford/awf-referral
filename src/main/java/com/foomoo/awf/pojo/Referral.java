@@ -2,6 +2,7 @@ package com.foomoo.awf.pojo;
 
 import com.foomoo.awf.render.LocalDateAdapter;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,6 +56,15 @@ public class Referral implements Serializable {
     private String experienceLivePerformance;
 
     private String whyReady;
+
+    /**
+     * To support testing, pre-populate this referral with dummy data.
+     */
+    @PostConstruct
+    public void prepopulate() {
+
+        ReferralPopulator.populateReferral(this);
+    }
 
     public String getApplicantName() {
         return applicantName;
