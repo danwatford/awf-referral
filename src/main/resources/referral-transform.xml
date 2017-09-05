@@ -13,11 +13,13 @@
             </fo:layout-master-set>
             <fo:page-sequence master-reference="A4-portrait">
                 <fo:flow flow-name="xsl-region-body">
-                    <fo:block text-align="center" space-before="8pt" space-after="8pt">
+                    <fo:block text-align="center" space-before="8pt" font-size="larger" font-weight="bold">
                         Amy's Yard Referral Form
                     </fo:block>
-                    <fo:block>Applicant Details</fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">Applicant Details</fo:block>
                     <fo:table>
+                        <fo:table-column column-width="30%" column-number="1"/>
+                        <fo:table-column column-number="2"/>
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
@@ -54,7 +56,7 @@
                                     <fo:block>Address</fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="applicantAddress"/>
                                     </fo:block>
                                 </fo:table-cell>
@@ -82,8 +84,10 @@
                         </fo:table-body>
                     </fo:table>
 
-                    <fo:block>Referrer Details</fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">Referrer Details</fo:block>
                     <fo:table>
+                        <fo:table-column column-width="30%" column-number="1"/>
+                        <fo:table-column column-number="2"/>
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
@@ -120,7 +124,7 @@
                                     <fo:block>Address</fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="referrerAddress"/>
                                     </fo:block>
                                 </fo:table-cell>
@@ -148,42 +152,42 @@
                         </fo:table-body>
                     </fo:table>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Please tell us about the young person you are referring:
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="aboutApplicant"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         How long have you been working with them?
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="howLongWorking"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         How were they referred to your organisation?
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="howReferred"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         How are you currently supporting them, and with what areas of their life?
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="howSupportingApplicant"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Do they have any additional needs we should be aware of?
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="anyAdditionalNeeds"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Applicable Circumstances
                     </fo:block>
                     <fo:list-block>
@@ -201,29 +205,31 @@
                         </xsl:for-each>
                     </fo:list-block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Please provide specific details so we are able to support individual needs:
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="circumstanceSpecificDetails"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Are they accessing any other professional support?
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="otherProfessionalSupport"/>
                     </fo:block>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Do they take any prescribed medication? If so please provide details:
                     </fo:block>
-                    <fo:block>
+                    <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="prescribedMedication"/>
                     </fo:block>
 
-                    <fo:block>Emergency Contact</fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">Emergency Contact</fo:block>
                     <fo:table>
+                        <fo:table-column column-width="30%" column-number="1"/>
+                        <fo:table-column column-number="2"/>
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
@@ -278,10 +284,12 @@
                         </fo:table-body>
                     </fo:table>
 
-                    <fo:block>
+                    <fo:block font-weight="bold" space-before="8pt">
                         Please tell us about their musical experience/talent to date
                     </fo:block>
                     <fo:table>
+                        <fo:table-column column-width="30%" column-number="1"/>
+                        <fo:table-column column-number="2"/>
                         <fo:table-body>
                             <fo:table-row>
                                 <fo:table-cell>
@@ -290,7 +298,7 @@
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="experienceInstruments"/>
                                     </fo:block>
                                 </fo:table-cell>
@@ -302,7 +310,7 @@
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="experienceStudio"/>
                                     </fo:block>
                                 </fo:table-cell>
@@ -314,7 +322,7 @@
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="experienceSongwriting"/>
                                     </fo:block>
                                 </fo:table-cell>
@@ -326,7 +334,7 @@
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block>
+                                    <fo:block linefeed-treatment="preserve">
                                         <xsl:value-of select="experienceLivePerformance"/>
                                     </fo:block>
                                 </fo:table-cell>
