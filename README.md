@@ -48,13 +48,14 @@ swarm:
         debug: true
 ```
 
-To build and run the solution execute:
+To build and run the solution execute change to the webapp directory and run:
 ```
 mvn wildfly-swarm:run
 ```
 
 Alternatively run or debug class `org.wildfly.swarm.Swarm` from your IDE with VM 
-arg `-Dswarm.project.stage.file=../awf-referral.yml`. Before using this method run 
+arg `-Dswarm.project.stage.file=../../awf-referral.yml` and the working directory set
+to the awf-webapp module's directory. Before using this method run
 using maven first to ensure all required dependencies are downloaded to the local 
 maven repository.
 

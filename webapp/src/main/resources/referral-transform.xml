@@ -334,7 +334,7 @@
                                     </fo:block>
                                 </fo:table-cell>
                                 <fo:table-cell>
-                                    <fo:block linefeed-treatment="preserve">
+                                    <fo:block linefeed-treatment="preserve" >
                                         <xsl:value-of select="experienceLivePerformance"/>
                                     </fo:block>
                                 </fo:table-cell>
