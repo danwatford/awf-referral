@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/danwatford/awf-referral.svg?branch=master)](https://travis-ci.org/danwatford/awf-referral)
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+
 # Amy Winehouse Foundation (AWF) - Amy's Yard Referral Web Application
 
 This web application allows partner organisations to AWF to submit referrals on behalf of applicants to the Amy's Yard programme - http://amywinehousefoundation.org/our-work/amys-yard
