@@ -25,9 +25,9 @@ public class ReferralSubmitter {
 
     public String submit() throws MessagingException {
 
-        confirmationHandler.sendConfirmation("dan-conf@foomoo.com");
-
         submissionHandler.handleSubmission(referral);
+
+        confirmationHandler.sendConfirmation(referral.getReferrerEmail());
 
         return "thanks";
     }

@@ -31,7 +31,7 @@ public class ConfirmationHandler {
         final MimeMessage message = new MimeMessage(session);
         try {
             message.addFrom(InternetAddress.parse(MailConfig.FROM));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(MailConfig.RECIPIENT_ADDRESS, false));
+            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(confirmationAddress, false));
             message.setSubject(MailConfig.CONFIRMATION_SUBJECT);
             message.setSentDate(new Date());
 
