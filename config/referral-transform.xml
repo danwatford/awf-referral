@@ -342,6 +342,16 @@
                         </fo:table-body>
                     </fo:table>
 
+                    <fo:block font-weight="bold" space-before="8pt">
+                        Please tell us why you feel they are ready for this opportunity
+                    </fo:block>
+                    <fo:block linefeed-treatment="preserve">
+                        <xsl:value-of select="whyReady"/>
+                    </fo:block>
+
+                    <fo:block space-before="8pt">
+                        Submitted: <xsl:value-of select="submissionDateTime"/>
+                    </fo:block>
                 </fo:flow>
             </fo:page-sequence>
         </fo:root>

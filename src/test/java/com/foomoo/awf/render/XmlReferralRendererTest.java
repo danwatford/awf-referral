@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,6 +34,11 @@ public class XmlReferralRendererTest {
         referral.setApplicantAddress("Applicant address\nsecond line");
         referral.setReferrerName("Referrer Name");
         referral.setReferrerAddress("Referrer address\nsecond line");
+
+        final ZoneId zoneId = ZoneId.of("Europe/London");
+
+        referral.setSubmissionDateTime(LocalDateTime.of(2017, 9, 11, 15, 33, 43)
+                                                    .atZone(zoneId));
 
         final XmlReferralRenderer xmlReferralRenderer = new XmlReferralRenderer();
         final String renderedXml = xmlReferralRenderer.render(referral);

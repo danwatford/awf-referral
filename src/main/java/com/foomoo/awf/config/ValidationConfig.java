@@ -27,7 +27,9 @@ public class ValidationConfig {
     static {
         final Configurations configs = new Configurations();
         try {
-            final PropertiesConfiguration properties = configs.properties(PROPS_FILE_NAME);
+            final PropertiesConfiguration properties = configs.properties(CommonConfig.getConfigDirectory()
+                                                                                      .resolve(PROPS_FILE_NAME)
+                                                                                      .toString());
 
             final String dobString = properties.getString("applicant.dob.max");
             APPLICANT_DOB_MAX = LocalDate.parse(dobString, DateTimeFormatter.ISO_LOCAL_DATE);

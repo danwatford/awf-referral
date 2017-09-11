@@ -1,5 +1,6 @@
 package com.foomoo.awf.render;
 
+import com.foomoo.awf.config.CommonConfig;
 import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
@@ -17,6 +18,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 /**
  * Class to render an XML representation of a {@link com.foomoo.awf.pojo.Referral} to PDF using Apache FOP.
@@ -75,14 +78,14 @@ public class PdfRenderer {
             try (final InputStream fopConfigurationInputStream = getFopConfigurationInputStream()) {
 
                 final Configuration cfg = cfgBuilder.build(fopConfigurationInputStream);
-                fopFactory = new FopFactoryBuilder(URI.create("/"))//.setConfiguration(cfg)
+                fopFactory = new FopFactoryBuilder(URI.create("/")).setConfiguration(cfg)
                                                                    .build();
             } catch (IOException e) {
-                throw new RuntimeException("IOException while processing Apache FOP configuration file: " + FOP_CONFIG_FILE_NAME, e);
+                throw new RuntimeException("IOException while processing Apache FOP configuration file: " + getFopConfigurationPath(), e);
             } catch (SAXException e) {
-                throw new RuntimeException("Parse exception while processing Apache FOP configuration file: " + FOP_CONFIG_FILE_NAME, e);
+                throw new RuntimeException("Parse exception while processing Apache FOP configuration file: " + getFopConfigurationPath(), e);
             } catch (ConfigurationException e) {
-                throw new RuntimeException("Configuration error while processing Apache FOP configuration file: " + FOP_CONFIG_FILE_NAME, e);
+                throw new RuntimeException("Configuration error while processing Apache FOP configuration file: " + getFopConfigurationPath(), e);
             }
         }
 
@@ -90,24 +93,50 @@ public class PdfRenderer {
     }
 
     /**
-     * Get an {@link InputStream} for the Apache FOP configuration file found in the class path.
+     * Get the {@link Path} to the Apache FOP configuration file.
+     *
+     * @return Path to the configuration file.
+     */
+    private Path getFopConfigurationPath() {
+        return CommonConfig.getConfigDirectory()
+                           .resolve(FOP_CONFIG_FILE_NAME);
+    }
+
+    /**
+     * Get an {@link InputStream} for the Apache FOP configuration file.
      *
      * @return InputStream of the configuration file.
      */
     private InputStream getFopConfigurationInputStream() {
-        return Thread.currentThread()
-                     .getContextClassLoader()
-                     .getResourceAsStream(FOP_CONFIG_FILE_NAME);
+        final Path fopConfigurationPath = getFopConfigurationPath();
+        try {
+            return Files.newInputStream(fopConfigurationPath);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException when opening Apache FOP Configuration file: " + fopConfigurationPath);
+        }
     }
 
     /**
-     * Get an {@link InputStream} for the Apache FOP XSLT file found in the class path.
+     * Get the {@link Path} to the Apache FOP XSLT file.
+     *
+     * @return Path to the configuration file.
+     */
+    private Path getFopTransformerPath() {
+        return CommonConfig.getConfigDirectory()
+                           .resolve(FOP_XSLT_FILE_NAME);
+    }
+
+    /**
+     * Get an {@link InputStream} for the Apache FOP XSLT file.
      *
      * @return InputStream of the XSLT file.
      */
     private InputStream getFopTransformerInputStream() {
-        return Thread.currentThread()
-                     .getContextClassLoader()
-                     .getResourceAsStream(FOP_XSLT_FILE_NAME);
+        final Path fopConfigurationPath = getFopTransformerPath();
+        try {
+            return Files.newInputStream(fopConfigurationPath);
+        } catch (IOException e) {
+            throw new RuntimeException("IOException when opening Apache FOP XSLT file: " + fopConfigurationPath);
+        }
     }
 }

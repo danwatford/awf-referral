@@ -61,8 +61,24 @@ arg `-Dswarm.project.stage.file=../awf-referral.yml`. Before using this method r
 using maven first to ensure all required dependencies are downloaded to the local 
 maven repository.
 
+### Running with Docker
+To build this project as a docker container run:
+```mvn -P docker package```
+
+This will create a docker image at repository danwatford/awf-referral:_version_. 
+
+The docker image relies on the awf-referral.yml file being created at /usr/share/awf-referral/etc.
+This file should be created in a volume called awf-referral-vol. Possible steps to create the volume
+and file are:
+- Run the container to populate the volume with a template configuration file:
+```docker run --name awf-referral --mount source=awf-referral-vol,destination=/usr/share/awf-referral/etc --publish 8080:8080 danwatford/awf-referral:0.0.1-SNAPSHOT```  
+- Stop the container using Ctrl-C or ```docker stop awf-referral```
+- Find the location of the awf-referral-vol volume on the docker host: ```docker volume inspect awf-referral-vol```
+- At the awf-referral-vol volume location, copy file awf-referral-template.yml to awf-referral.yml. (You will probably need to 
+be root to do this.) Edit awf-referral.yml with your mail server details.
+- Start the container again: ```docker start awf-referral```
+- Monitor the container: ```docker logs -f awf-referral```
+
 ## To Do
 Following submission of a referral:
 - Validate all required fields have been entered. Display appropriate error messages to the user if any information is missing.
-- Email the content of the submission to the referrer.
-- Send the content of the submission to AWF.

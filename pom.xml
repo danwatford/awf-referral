@@ -60,6 +60,8 @@
                 <configuration>
                     <properties>
                         <swarm.project.stage.file>../awf-referral.yml</swarm.project.stage.file>
+                        <!-- Needed for running WildFly Swarm in a docker container. -->
+                        <java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
                     </properties>
                 </configuration>
                 <executions>
@@ -141,4 +143,30 @@
         </dependency>
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>docker</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.spotify</groupId>
+                        <artifactId>dockerfile-maven-plugin</artifactId>
+                        <version>1.3.5</version>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <goals>
+                                    <goal>build</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                        <configuration>
+                            <repository>danwatford/awf-referral</repository>
+                            <tag>${project.version}</tag>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>
