@@ -11,6 +11,8 @@ import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 
 @Tag("integration")
 class PdfRendererExercise {
@@ -23,6 +25,11 @@ class PdfRendererExercise {
 
         final Referral referral = new Referral();
         ReferralPopulator.populateReferral(referral);
+
+        final ZoneId zoneId = ZoneId.of("Europe/London");
+        referral.setSubmissionDateTime(LocalDateTime.of(2017, 9, 11, 15, 33, 43)
+                                                    .atZone(zoneId));
+
 
         final String xmlInput = new XmlReferralRenderer().render(referral);
 

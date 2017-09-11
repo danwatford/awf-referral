@@ -3,6 +3,7 @@ package com.foomoo.awf.pojo;
 import com.google.common.collect.ImmutableList;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 
 /**
  * Populates a {@link com.foomoo.awf.pojo.Referral} with dummy data to assist testing.
@@ -41,7 +42,7 @@ public class ReferralPopulator {
         referral.setAnyAdditionalNeeds("Additional Needs Line 1 Additional Needs Line 1 Additional Needs Line 1 \n" +
                 "Additional Needs Line 2 Additional Needs Line 2 Additional Needs Line 2 ");
 
-        referral.setApplicableCircumstances(ImmutableList.of("Homelessness", "Eating Disorder", "History of Offending", "Self Harm", "Other"));
+        referral.setApplicableCircumstances(new ArrayList<>(ImmutableList.of("Homelessness", "Eating Disorder", "History of Offending", "Self Harm", "Other")));
         referral.setCircumstanceSpecificDetails("Circumstances Details Line 1 Circumstances Details Line 1 Circumstances Details Line 1 \n" +
                 "Circumstances Details Line 2 Circumstances Details Line 2 Circumstances Details Line 2 \n" +
                 "Circumstances Details Line 3 Circumstances Details Line 3 Circumstances Details Line 3 ");
@@ -59,6 +60,8 @@ public class ReferralPopulator {
         referral.setExperienceStudio("Studio Experience");
         referral.setExperienceSongwriting("Songwriting Experience");
         referral.setExperienceLivePerformance("Live Experience");
+
+        referral.setWhyReady("Why Ready");
 
     }
 }

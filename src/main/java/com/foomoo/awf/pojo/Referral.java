@@ -1,6 +1,7 @@
 package com.foomoo.awf.pojo;
 
 import com.foomoo.awf.render.LocalDateAdapter;
+import com.foomoo.awf.render.ZonedDateTimeAdapter;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 /**
@@ -56,6 +58,8 @@ public class Referral implements Serializable {
     private String experienceLivePerformance;
 
     private String whyReady;
+
+    private ZonedDateTime submissionDateTime;
 
     /**
      * To support testing, pre-populate this referral with dummy data.
@@ -313,5 +317,14 @@ public class Referral implements Serializable {
 
     public void setWhyReady(String whyReady) {
         this.whyReady = whyReady;
+    }
+
+    @XmlJavaTypeAdapter(value = ZonedDateTimeAdapter.class)
+    public ZonedDateTime getSubmissionDateTime() {
+        return submissionDateTime;
+    }
+
+    public void setSubmissionDateTime(final ZonedDateTime submissionDateTime) {
+        this.submissionDateTime = submissionDateTime;
     }
 }

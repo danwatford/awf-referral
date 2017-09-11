@@ -6,6 +6,8 @@ import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.mail.MessagingException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 /**
  * Class to allow submission of referrals to the application.
@@ -24,6 +26,9 @@ public class ReferralSubmitter {
     SubmissionHandler submissionHandler;
 
     public String submit() throws MessagingException {
+
+        final ZoneId zoneId = ZoneId.of("Europe/London");
+        referral.setSubmissionDateTime(ZonedDateTime.now(zoneId));
 
         submissionHandler.handleSubmission(referral);
 
