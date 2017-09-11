@@ -28,7 +28,7 @@ class PdfRendererExercise {
 
         final PdfRenderer pdfRenderer = new PdfRenderer();
 
-        final OutputStream os = Files.newOutputStream(Paths.get("test.pdf"));
+        final OutputStream os = Files.newOutputStream(Paths.get("target/test.pdf"));
         pdfRenderer.render(xmlInput, os);
     }
 }

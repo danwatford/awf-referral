@@ -1,0 +1,20 @@
+# Template YAML configuration file for WildFly Swarm.
+# Copy this file to awf-referral.yml and fill in the missing values.
+swarm:
+  network:
+    socket-binding-groups:
+      standard-sockets:
+        outbound-socket-bindings:
+          mail-smtp:
+            remote-host: <mail server>                    # Value needed
+            remote-port: <server port - probably 587>     # Value needed
+  mail:
+    mail-sessions:
+      AWF:
+        jndi-name: java:/mail/awf-mail
+        smtp-server:
+          outbound-socket-binding-ref: mail-smtp
+          username: <mail server user name>               # Value needed
+          password: <mail server password>                # Value needed
+          tls: true
+        debug: true
