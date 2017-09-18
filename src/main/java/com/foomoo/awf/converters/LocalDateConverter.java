@@ -15,6 +15,10 @@ public class LocalDateConverter implements Converter {
 
     @Override
     public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
+        if ("".equals(value)) {
+            return null;
+        }
+
         try {
             return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         } catch (final DateTimeParseException dtpe) {
