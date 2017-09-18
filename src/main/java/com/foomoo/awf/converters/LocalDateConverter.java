@@ -15,18 +15,18 @@ public class LocalDateConverter implements Converter {
 
     @Override
     public Object getAsObject(final FacesContext context, final UIComponent component, final String value) {
-        if ("".equals(value)) {
-            return null;
-        }
-
-        try {
-            return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        } catch (final DateTimeParseException dtpe) {
+        if (value != null) {
             try {
-                return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/M/yyyy"));
-            } catch (final DateTimeParseException dtpe2) {
-                throw new ConverterException(new FacesMessage("Cannot convert String " + value + " to date."));
+                return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            } catch (final DateTimeParseException dtpe) {
+                try {
+                    return LocalDate.parse(value, DateTimeFormatter.ofPattern("dd/M/yyyy"));
+                } catch (final DateTimeParseException dtpe2) {
+                    throw new ConverterException(new FacesMessage("Cannot convert String " + value + " to date."));
+                }
             }
+        } else {
+            return null;
         }
     }
 

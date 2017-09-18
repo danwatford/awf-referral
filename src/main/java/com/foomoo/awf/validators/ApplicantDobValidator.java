@@ -4,6 +4,7 @@ import com.foomoo.awf.config.ValidationConfig;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
+import javax.faces.component.UIInput;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.FacesValidator;
 import javax.faces.validator.Validator;
@@ -17,13 +18,17 @@ public class ApplicantDobValidator implements Validator {
     @Override
     public void validate(final FacesContext context, final UIComponent component, final Object value) throws ValidatorException {
 
-        final LocalDate dateOfBirth = (LocalDate) value;
-        if (ValidationConfig.APPLICANT_DOB_MAX.isBefore(dateOfBirth)) {
+        if (value != null) {
+            final LocalDate dateOfBirth = (LocalDate) value;
+            if (ValidationConfig.APPLICANT_DOB_MAX.isBefore(dateOfBirth)) {
 
-            final FacesMessage message = new FacesMessage(APPLICANT_VALIDATION_FAIL_MSG);
-            message.setSeverity(FacesMessage.SEVERITY_ERROR);
-            throw new ValidatorException(message);
+                ((UIInput) component).setValid(false);
+
+                final FacesMessage message = new FacesMessage(APPLICANT_VALIDATION_FAIL_MSG);
+                message.setSeverity(FacesMessage.SEVERITY_ERROR);
+
+                context.addMessage(component.getClientId(context), message);
+            }
         }
-
     }
 }

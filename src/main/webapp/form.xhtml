@@ -36,30 +36,34 @@
 <h:body>
     <div class="container">
         <h:form prependId="false" styleClass="form-horizontal">
-            <h:messages/>
-            <fieldset>
+            <div class="form-group has-error">
+                <h:messages styleClass="help-block" globalOnly="false"/>
+            </div>
 
+            <fieldset>
                 <legend>Details of the young person you would like to refer to the project</legend>
 
                 <div class="form-group">
                     <h:outputLabel for="applicantName" styleClass="col-md-4 control-label">Full Name</h:outputLabel>
                     <div class="col-md-6">
-                        <h:inputText id="applicantName" styleClass="form-control input-md" required="true"
+                        <h:inputText id="applicantName" styleClass="form-control input-md"
                                      p:placeholder="Full Name"
                                      value="#{referral.applicantName}"/>
                     </div>
+                    <h:message styleClass="help-block" for="applicantName"/>
                 </div>
 
                 <div class="form-group">
                     <h:outputLabel for="applicantDob" styleClass="col-md-4 control-label">Date of Birth</h:outputLabel>
                     <div class="col-md-6">
-                        <h:inputText id="applicantDob" styleClass="form-control input-md" required="true"
+                        <h:inputText id="applicantDob" styleClass="form-control input-md"
                                      p:placeholder="Date of Birth"
                                      value="#{referral.applicantDateOfBirth}" placeholder="Date of Birth">
                             <f:converter converterId="localDateConverter"/>
                             <f:validator validatorId="applicantDobValidator"/>
                         </h:inputText>
                     </div>
+                    <h:message styleClass="help-block" for="applicantDob"/>
                 </div>
 
                 <div class="form-group">
@@ -80,11 +84,12 @@
                 <div class="form-group">
                     <h:outputLabel for="applicantAddress" styleClass="col-md-4 control-label">Address</h:outputLabel>
                     <div class="col-md-6">
-                        <h:inputTextarea id="applicantAddress" styleClass="form-control input-md" required="true"
+                        <h:inputTextarea id="applicantAddress" styleClass="form-control input-md"
                                          p:placeholder="Address"
                                          rows="5" value="#{referral.applicantAddress}">
                         </h:inputTextarea>
                     </div>
+                    <h:message styleClass="help-block" for="applicantAddress"/>
                 </div>
 
                 <div class="form-group">
@@ -117,6 +122,7 @@
                         <h:inputText id="referrerName" styleClass="form-control input-md"
                                      p:placeholder="Name" value="#{referral.referrerName}"/>
                     </div>
+                    <h:message styleClass="help-block" for="referrerName"/>
                 </div>
 
                 <div class="form-group">
@@ -135,16 +141,18 @@
                         <h:inputText id="referrerOrganisation" styleClass="form-control input-md"
                                      p:placeholder="Organisation" value="#{referral.referrerOrganisation}"/>
                     </div>
+                    <h:message styleClass="help-block" for="referrerOrganisation"/>
                 </div>
 
                 <div class="form-group">
                     <h:outputLabel for="referrerAddress" styleClass="col-md-4 control-label">Address</h:outputLabel>
                     <div class="col-md-6">
-                        <h:inputTextarea id="referrerAddress" styleClass="form-control input-md" required="true"
+                        <h:inputTextarea id="referrerAddress" styleClass="form-control input-md"
                                          p:placeholder="Address"
                                          rows="5" value="#{referral.referrerAddress}">
                         </h:inputTextarea>
                     </div>
+                    <h:message styleClass="help-block" for="referrerAddress"/>
                 </div>
 
                 <div class="form-group">
@@ -163,6 +171,7 @@
                         <h:inputText id="referrerEmail" styleClass="form-control input-md"
                                      p:placeholder="Email Address" value="#{referral.referrerEmail}"/>
                     </div>
+                    <h:message styleClass="help-block" for="referrerEmail"/>
                 </div>
             </fieldset>
 
