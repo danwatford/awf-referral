@@ -1,5 +1,6 @@
 package com.foomoo.awf.render;
 
+import com.foomoo.awf.pojo.Gender;
 import com.foomoo.awf.pojo.Referral;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
@@ -29,7 +30,7 @@ public class XmlReferralRendererTest {
 
         final Referral referral = new Referral();
         referral.setApplicantName("Applicant Name");
-        referral.setApplicantGender("Female");
+        referral.setApplicantGender(Gender.FEMALE);
         referral.setApplicantDateOfBirth(LocalDate.of(1999, 1, 12));
         referral.setApplicantAddress("Applicant address\nsecond line");
         referral.setReferrerName("Referrer Name");

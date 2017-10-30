@@ -3,37 +3,41 @@ package com.foomoo.awf.pojo;
 import com.foomoo.awf.render.LocalDateAdapter;
 import com.foomoo.awf.render.ZonedDateTimeAdapter;
 import com.foomoo.awf.validators.Email;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
-import javax.inject.Named;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
-import java.util.List;
+import java.util.Set;
+
+//import javax.enterprise.context.SessionScoped;
+//import javax.inject.Named;
+//import javax.validation.constraints.NotNull;
+//import javax.validation.constraints.Pattern;
 
 /**
  * Object holding the data related to a referral submission.
  */
-@Named
-@SessionScoped
+//@Named
+//@SessionScoped
 @XmlRootElement
 public class Referral implements Serializable {
 
     @NotNull(message = "Please enter the applicant's name.")
     private String applicantName;
     @NotNull(message = "Please enter the applicant's date of birth.")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate applicantDateOfBirth;
-    private String applicantGender;
+    private Gender applicantGender;
     @NotNull(message = "Please enter the applicant's address.")
     private String applicantAddress;
     private String applicantTelephone;
     @NotNull(message = "Please enter applicant email address.")
-    @Email(message = "Applicant email address format is invalid.")
+//    @Email(message = "Applicant email address format is invalid.")
     private String applicantEmail;
 
     @NotNull(message = "Please enter your name.")
@@ -45,7 +49,7 @@ public class Referral implements Serializable {
     private String referrerAddress;
     private String referrerTelephone;
     @NotNull(message = "Please enter your email address.")
-    @Email(message = "Your email address format is invalid.")
+//    @Email(message = "Your email address format is invalid.")
     private String referrerEmail;
 
     private String aboutApplicant;
@@ -54,7 +58,7 @@ public class Referral implements Serializable {
     private String howSupportingApplicant;
     private String anyAdditionalNeeds;
 
-    private List<String> applicableCircumstances;
+    private Set<ApplicableCircumstance> applicableCircumstances;
     private String circumstanceSpecificDetails;
     private String otherProfessionalSupport;
     private String prescribedMedication;
@@ -73,6 +77,10 @@ public class Referral implements Serializable {
     private String whyReady;
 
     private ZonedDateTime submissionDateTime;
+
+    public Referral() {
+        ReferralPopulator.populateReferral(this);
+    }
 
     /**
      * To support testing, pre-populate this referral with dummy data.
@@ -100,11 +108,11 @@ public class Referral implements Serializable {
         this.applicantDateOfBirth = applicantDateOfBirth;
     }
 
-    public String getApplicantGender() {
+    public Gender getApplicantGender() {
         return applicantGender;
     }
 
-    public void setApplicantGender(final String applicantGender) {
+    public void setApplicantGender(final Gender applicantGender) {
         this.applicantGender = applicantGender;
     }
 
@@ -220,11 +228,11 @@ public class Referral implements Serializable {
         this.anyAdditionalNeeds = anyAdditionalNeeds;
     }
 
-    public List<String> getApplicableCircumstances() {
+    public Set<ApplicableCircumstance> getApplicableCircumstances() {
         return applicableCircumstances;
     }
 
-    public void setApplicableCircumstances(List<String> applicableCircumstances) {
+    public void setApplicableCircumstances(Set<ApplicableCircumstance> applicableCircumstances) {
         this.applicableCircumstances = applicableCircumstances;
     }
 

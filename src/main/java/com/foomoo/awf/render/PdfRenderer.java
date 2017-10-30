@@ -7,7 +7,7 @@ import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.*;
 import org.xml.sax.SAXException;
 
-import javax.enterprise.context.ApplicationScoped;
+//import javax.enterprise.context.ApplicationScoped;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
 /**
  * Class to render an XML representation of a {@link com.foomoo.awf.pojo.Referral} to PDF using Apache FOP.
  */
-@ApplicationScoped
+//@ApplicationScoped
 public class PdfRenderer {
 
     /**
