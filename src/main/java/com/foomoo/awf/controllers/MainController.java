@@ -3,6 +3,7 @@ package com.foomoo.awf.controllers;
 import com.foomoo.awf.pojo.ApplicableCircumstance;
 import com.foomoo.awf.pojo.Gender;
 import com.foomoo.awf.pojo.Referral;
+import com.foomoo.awf.processors.ReferralSubmitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +18,12 @@ import java.util.List;
 @Controller
 @RequestMapping("/")
 public class MainController {
+
+    private final ReferralSubmitter referralSubmitter;
+
+    public MainController(ReferralSubmitter referralSubmitter) {
+        this.referralSubmitter = referralSubmitter;
+    }
 
     @ModelAttribute("allApplicableCircumstances")
     public List<ApplicableCircumstance> populateApplicableCicumstances() {
@@ -38,6 +45,7 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "form";
         } else {
+            referralSubmitter.submit(referral);
             return "thanks";
         }
     }
