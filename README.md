@@ -20,9 +20,9 @@ This project is concerned with providing an online method to submit referrals to
 
 ## Current Implementation
 
-This project has been implemented as a wildfly swarm solution.
+This project has been implemented as a spring-boot solution.
 
-The solution publishes a JSF page, form.xhtml, to capture the details of a referral.
+The solution publishes a form, based on a thymeleaf template, to caputre the details of a referral.
 The form can be embedded in an iframe on another website. Page inframetest.html exercises that the iframe can be resized along with the form through use of iframe-resizer (https://github.com/davidjbradshaw/iframe-resizer).
 
 ### Running
