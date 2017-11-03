@@ -26,38 +26,32 @@ The solution publishes a JSF page, form.xhtml, to capture the details of a refer
 The form can be embedded in an iframe on another website. Page inframetest.html exercises that the iframe can be resized along with the form through use of iframe-resizer (https://github.com/davidjbradshaw/iframe-resizer).
 
 ### Running
-This project runs on Wildfly Swarm and depends on configuration being in place for sending emails.
+This project is based on spring-boot and depends on configuration being in place for sending emails.
 
-Create file awf-referral.yml in the parent directory of the project with contents similar to the following:
+Create file application.yml in the working directory (root) of the project with contents similar to the following:
 
 ```
-swarm:
-  network:
-    socket-binding-groups:
-      standard-sockets:
-        outbound-socket-bindings:
-          mail-smtp:
-            remote-host: <smtp-server-address>
-            remote-port: <smtp-server-port: probably 587>
+spring:
   mail:
-    mail-sessions:
-      AWF:
-        jndi-name: java:/mail/awf-mail
-        smtp-server:
-          outbound-socket-binding-ref: mail-smtp
-          username: <username>
-          password: <password>
-          tls: true
+    host: <smtp-server-address>
+    port: <smtp-server-port: probably 587>
+    username: <username>
+    password: <password>
+    properties:
+      mail:
         debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 ```
 
 To build and run the solution execute:
 ```
-mvn wildfly-swarm:run
+mvn spring-boot:run
 ```
 
-Alternatively run or debug class `org.wildfly.swarm.Swarm` from your IDE with VM 
-arg `-Dswarm.project.stage.file=../awf-referral.yml`. Before using this method run 
+Alternatively run or debug class `com.foomoo.awf.Application` from your IDE. Before using this method run 
 using maven first to ensure all required dependencies are downloaded to the local 
 maven repository.
 
