@@ -1,5 +1,5 @@
-# Template YAML configuration file for WildFly Swarm.
-# Copy this file to awf-referral.yml and fill in the missing values.
+# Template YAML configuration file for spring-boot.
+# Copy this file to application.yml and fill in the missing values.
 swarm:
   network:
     socket-binding-groups:
