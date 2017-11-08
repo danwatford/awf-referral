@@ -1,20 +1,13 @@
-# Template YAML configuration file for spring-boot.
-# Copy this file to application.yml and fill in the missing values.
-swarm:
-  network:
-    socket-binding-groups:
-      standard-sockets:
-        outbound-socket-bindings:
-          mail-smtp:
-            remote-host: <mail server>                    # Value needed
-            remote-port: <server port - probably 587>     # Value needed
+spring:
   mail:
-    mail-sessions:
-      AWF:
-        jndi-name: java:/mail/awf-mail
-        smtp-server:
-          outbound-socket-binding-ref: mail-smtp
-          username: <mail server user name>               # Value needed
-          password: <mail server password>                # Value needed
-          tls: true
+    host: <smtp-server-address>
+    port: <smtp-server-port: probably 587>
+    username: <username>
+    password: <password>
+    properties:
+      mail:
         debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
