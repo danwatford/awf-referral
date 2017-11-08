@@ -4,6 +4,8 @@ import com.foomoo.awf.config.MailConfig;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -14,9 +16,11 @@ import javax.mail.internet.MimeMessage;
 @Service
 public class ConfirmationHandler {
 
+    private TemplateEngine templateEngine;
     private final JavaMailSender mailSender;
 
-    public ConfirmationHandler(JavaMailSender mailSender) {
+    public ConfirmationHandler(final TemplateEngine templateEngine, final JavaMailSender mailSender) {
+        this.templateEngine = templateEngine;
         this.mailSender = mailSender;
     }
 
@@ -34,7 +38,7 @@ public class ConfirmationHandler {
             messageHelper.setFrom(MailConfig.FROM);
             messageHelper.setTo(confirmationAddress);
             messageHelper.setSubject(MailConfig.CONFIRMATION_SUBJECT);
-            final String content = MailConfig.CONFIRMATION_BODY_TEMPLATE;
+            final String content = templateEngine.process("confirmation-template", new Context());
             messageHelper.setText(content, true);
         } catch (MessagingException e) {
             throw new RuntimeException("There was a problem constructing or sending the confirmation message.", e);

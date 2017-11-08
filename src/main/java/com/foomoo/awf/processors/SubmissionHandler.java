@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.mail.util.ByteArrayDataSource;
-import java.nio.charset.StandardCharsets;
 
 /**
  * Class to accept a submission and forward it to its recipients by email.
@@ -42,7 +41,7 @@ public class SubmissionHandler {
             messageHelper.setFrom(MailConfig.FROM);
             messageHelper.setTo(MailConfig.RECIPIENT_ADDRESS);
             messageHelper.setSubject(MailConfig.SUBJECT);
-            messageHelper.setText("New Referral: " + referral.getApplicantName(), StandardCharsets.UTF_8.toString());
+            messageHelper.setText("New Referral: " + referral.getApplicantName(), false);
             messageHelper.addAttachment(String.format("%s Referral.pdf", referral.getApplicantName()),
                     new ByteArrayDataSource(baos.toByteArray(), "application/pdf"));
         } catch (MessagingException e) {
