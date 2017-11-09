@@ -2,7 +2,7 @@ package com.foomoo.awf.pojo;
 
 import com.foomoo.awf.render.LocalDateAdapter;
 import com.foomoo.awf.render.ZonedDateTimeAdapter;
-import com.foomoo.awf.validators.Email;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.annotation.PostConstruct;
@@ -14,16 +14,9 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Set;
 
-//import javax.enterprise.context.SessionScoped;
-//import javax.inject.Named;
-//import javax.validation.constraints.NotNull;
-//import javax.validation.constraints.Pattern;
-
 /**
  * Object holding the data related to a referral submission.
  */
-//@Named
-//@SessionScoped
 @XmlRootElement
 public class Referral implements Serializable {
 
@@ -36,8 +29,8 @@ public class Referral implements Serializable {
     @NotNull(message = "Please enter the applicant's address.")
     private String applicantAddress;
     private String applicantTelephone;
-    @NotNull(message = "Please enter applicant email address.")
-//    @Email(message = "Applicant email address format is invalid.")
+    @NotNull(message = "Please enter the applicant's email address.")
+    @Email(message = "Applicant email address format is invalid.")
     private String applicantEmail;
 
     @NotNull(message = "Please enter your name.")
@@ -49,7 +42,7 @@ public class Referral implements Serializable {
     private String referrerAddress;
     private String referrerTelephone;
     @NotNull(message = "Please enter your email address.")
-//    @Email(message = "Your email address format is invalid.")
+    @Email(message = "Your email address format is invalid.")
     private String referrerEmail;
 
     private String aboutApplicant;
