@@ -71,10 +71,6 @@ public class Referral implements Serializable {
 
     private ZonedDateTime submissionDateTime;
 
-    public Referral() {
-        ReferralPopulator.populateReferral(this);
-    }
-
     /**
      * To support testing, pre-populate this referral with dummy data.
      */

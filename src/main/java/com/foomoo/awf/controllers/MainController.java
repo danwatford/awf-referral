@@ -3,6 +3,7 @@ package com.foomoo.awf.controllers;
 import com.foomoo.awf.pojo.ApplicableCircumstance;
 import com.foomoo.awf.pojo.Gender;
 import com.foomoo.awf.pojo.Referral;
+import com.foomoo.awf.pojo.ReferralPopulator;
 import com.foomoo.awf.processors.ReferralSubmitter;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -37,6 +38,7 @@ public class MainController {
 
     @GetMapping
     public String createForm(Referral referral) {
+        ReferralPopulator.populateReferral(referral);
         return "form";
     }
 
