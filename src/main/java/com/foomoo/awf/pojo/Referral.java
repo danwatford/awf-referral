@@ -20,16 +20,16 @@ import java.util.Set;
 @XmlRootElement
 public class Referral implements Serializable {
 
-    @NotNull(message = "Please enter the applicant's name.")
+    @NotNull(message = "Please enter the applicant''s name.")
     private String applicantName;
-    @NotNull(message = "Please enter the applicant's date of birth.")
+    @NotNull(message = "Please enter the applicant''s date of birth.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate applicantDateOfBirth;
     private Gender applicantGender;
-    @NotNull(message = "Please enter the applicant's address.")
+    @NotNull(message = "Please enter the applicant''s address.")
     private String applicantAddress;
     private String applicantTelephone;
-    @NotNull(message = "Please enter the applicant's email address.")
+    @NotNull(message = "Please enter the applicant''s email address.")
     @Email(message = "Applicant email address format is invalid.")
     private String applicantEmail;
 

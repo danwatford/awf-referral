@@ -30,22 +30,23 @@
             <legend>Details of the young person you would like to refer to the project</legend>
 
             <div class="form-group">
-                <label for="applicantName" class="col-md-4 control-label">Full Name</label>
-                <div class="col-md-6">
-                    <input id="applicantName" type="text" th:field="*{applicantName}"
+                <label th:for="${#ids.next('applicantName')}" class="col-md-4 control-label">Full Name</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantName')}? has-error">
+                    <input type="text" th:field="*{applicantName}"
                            class="form-control input-md" placeholder="Full Name"/>
+                    <div th:if="${#fields.hasErrors('applicantName')}" th:errors="*{applicantName}" class="help-block"/>
                 </div>
-                <div th:if="${#fields.hasErrors('applicantName')}" th:errors="*{applicantName}" class="help-block"/>
             </div>
 
             <div class="form-group">
-                <label for="applicantDateOfBirth" class="col-md-4 control-label">Date of Birth</label>
-                <div class="col-md-6">
-                    <input id="applicantDateOfBirth" type="date" th:field="*{applicantDateOfBirth}"
+                <label th:for="${#ids.next('applicantDateOfBirth')}" class="col-md-4 control-label">Date of
+                    Birth</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantDateOfBirth')}? has-error">
+                    <input type="date" th:field="*{applicantDateOfBirth}"
                            class="form-control input-md" placeholder="Date of Birth"/>
+                    <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}"
+                         class="help-block"/>
                 </div>
-                <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}"
-                     class="help-block"/>
             </div>
 
             <div class="form-group">
@@ -59,11 +60,13 @@
             </div>
 
             <div class="form-group">
-                <label for="applicantAddress" class="col-md-4 control-label">Address</label>
-                <div class="col-md-6">
-                    <textarea id="applicantAddress" class="form-control input-md"
+                <label th:for="${#ids.next('applicantAddress')}" class="col-md-4 control-label">Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantAddress')}? has-error">
+                    <textarea class="form-control input-md"
                               placeholder="Address" rows="5" th:field="*{applicantAddress}">
                     </textarea>
+                    <div th:if="${#fields.hasErrors('applicantAddress')}" th:errors="*{applicantAddress}"
+                         class="help-block"/>
                 </div>
             </div>
 
@@ -76,10 +79,12 @@
             </div>
 
             <div class="form-group">
-                <label for="applicantEmail" class="col-md-4 control-label">Email Address</label>
-                <div class="col-md-6">
-                    <input type="text" id="applicantEmail" class="form-control input-md"
+                <label th:for="${#ids.next('applicantEmail')}" class="col-md-4 control-label">Email Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantEmail')}? has-error">
+                    <input type="text" class="form-control input-md"
                            placeholder="Email address" th:field="*{applicantEmail}"/>
+                    <div th:if="${#fields.hasErrors('applicantEmail')}" th:errors="*{applicantEmail}"
+                         class="help-block"/>
                 </div>
             </div>
         </fieldset>
@@ -88,52 +93,60 @@
             <legend>Details of your role and organisation</legend>
 
             <div class="form-group">
-                <label for="referrerName" class="col-md-4 control-label">Name</label>
-                <div class="col-md-6">
-                    <input type="text" id="referrerName" class="form-control input-md"
+                <label th:for="${#ids.next('referrerName')}" class="col-md-4 control-label">Name</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerName')}? has-error">
+                    <input type="text" class="form-control input-md"
                            placeholder="Name" th:field="*{referrerName}"/>
+                    <div th:if="${#fields.hasErrors('referrerName')}" th:errors="*{referrerName}"
+                         class="help-block"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="referrerJobTitle" class="col-md-4 control-label">Job Title</label>
+                <label th:for="${#ids.next('referrerJobTitle')}" class="col-md-4 control-label">Job Title</label>
                 <div class="col-md-6">
-                    <input type="text" id="referrerJobTitle" class="form-control input-md"
+                    <input type="text" class="form-control input-md"
                            placeholder="Job Title" th:field="*{referrerJobTitle}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="referrerOrganisation" class="col-md-4 control-label">Organisation</label>
-                <div class="col-md-6">
-                    <input type="text" id="referrerOrganisation" class="form-control input-md"
+                <label th:for="${#ids.next('referrerOrganisation')}" class="col-md-4 control-label">Organisation</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerOrganisation')}? has-error">
+                    <input type="text" class="form-control input-md"
                            placeholder="Organisation" th:field="*{referrerOrganisation}"/>
+                    <div th:if="${#fields.hasErrors('referrerOrganisation')}" th:errors="*{referrerOrganisation}"
+                         class="help-block"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="referrerAddress" class="col-md-4 control-label">Address</label>
-                <div class="col-md-6">
-                    <textarea id="referrerAddress" class="form-control input-md"
+                <label th:for="${#ids.next('referrerAddress')}" class="col-md-4 control-label">Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerAddress')}? has-error">
+                    <textarea class="form-control input-md"
                               placeholder="Address"
                               rows="5" th:field="*{referrerAddress}">
                     </textarea>
+                    <div th:if="${#fields.hasErrors('referrerAddress')}" th:errors="*{referrerAddress}"
+                         class="help-block"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="referrerTelephone" class="col-md-4 control-label">Telephone Number</label>
+                <label th:for="${#ids.next('referrerTelephone')}" class="col-md-4 control-label">Telephone Number</label>
                 <div class="col-md-6">
-                    <input type="text" id="referrerTelephone" class="form-control input-md"
+                    <input type="text" class="form-control input-md"
                            placeholder="Telephone Number" th:field="*{referrerTelephone}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <label for="referrerEmail" class="col-md-4 control-label">Email Address</label>
-                <div class="col-md-6">
-                    <input type="text" id="referrerEmail" class="form-control input-md"
+                <label th:for="${#ids.next('referrerEmail')}" class="col-md-4 control-label">Email Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerEmail')}? has-error">
+                    <input type="text" class="form-control input-md"
                            placeholder="Email Address" th:field="*{referrerEmail}"/>
+                    <div th:if="${#fields.hasErrors('referrerEmail')}" th:errors="*{referrerEmail}"
+                         class="help-block"/>
                 </div>
             </div>
         </fieldset>
