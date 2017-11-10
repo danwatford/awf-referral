@@ -1,7 +1,9 @@
 package com.foomoo.awf.render;
 
+import com.foomoo.awf.pojo.ApplicableCircumstance;
 import com.foomoo.awf.pojo.Gender;
 import com.foomoo.awf.pojo.Referral;
+import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.IOUtils;
 import org.junit.jupiter.api.Test;
 
@@ -35,6 +37,11 @@ public class XmlReferralRendererTest {
         referral.setApplicantAddress("Applicant address\nsecond line");
         referral.setReferrerName("Referrer Name");
         referral.setReferrerAddress("Referrer address\nsecond line");
+
+        referral.setApplicableCircumstances(ImmutableSet.of(
+                ApplicableCircumstance.ADDITIONAL_LEARNING_NEEDS,
+                ApplicableCircumstance.HOMELESSNESS,
+                ApplicableCircumstance.OTHER));
 
         final ZoneId zoneId = ZoneId.of("Europe/London");
 

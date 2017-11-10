@@ -1,20 +1,22 @@
 package com.foomoo.awf.pojo;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 public enum  ApplicableCircumstance {
-    HOMELESSNESS("Homelessness"),
-    SUBSTANCE_MISUSE("Substance Misuse"),
-    EATING_DISORDER("Eating Disorder"),
-    UNEMPLOYED("Unemployed"),
-    HISTORY_OF_OFFENDING("History of Offending"),
-    MENTAL_HEALTH_ISSUES("Mental Health Issues"),
-    SELF_HARM("Self Harm"),
-    ADDITIONAL_LEARNING_NEEDS("Additional Learning Needs"),
-    NOT_IN_TRAINING("Not in Training"),
-    OTHER("Other");
+    @XmlEnumValue("Homelessness") HOMELESSNESS("Homelessness"),
+    @XmlEnumValue("Substance Misuse") SUBSTANCE_MISUSE("Substance Misuse"),
+    @XmlEnumValue("Eating Disorder") EATING_DISORDER("Eating Disorder"),
+    @XmlEnumValue("Unemployed") UNEMPLOYED("Unemployed"),
+    @XmlEnumValue("History of Offending") HISTORY_OF_OFFENDING("History of Offending"),
+    @XmlEnumValue("Mental Health Issues") MENTAL_HEALTH_ISSUES("Mental Health Issues"),
+    @XmlEnumValue("Self Harm") SELF_HARM("Self Harm"),
+    @XmlEnumValue("Additional Learning Needs") ADDITIONAL_LEARNING_NEEDS("Additional Learning Needs"),
+    @XmlEnumValue("Not in Training") NOT_IN_TRAINING("Not in Training"),
+    @XmlEnumValue("Other") OTHER("Other");
 
     private String name;
 
-    private ApplicableCircumstance(String name) {
+    ApplicableCircumstance(String name) {
         this.name = name;
     }
 

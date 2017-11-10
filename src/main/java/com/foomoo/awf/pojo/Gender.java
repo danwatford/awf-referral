@@ -1,15 +1,17 @@
 package com.foomoo.awf.pojo;
 
+import javax.xml.bind.annotation.XmlEnumValue;
+
 public enum Gender {
 
-    MALE("Male"),
-    FEMALE("Female"),
-    TRANSGENDER("Transgender"),
-    NON_BINARY("Non-binary");
+    @XmlEnumValue("Male") MALE("Male"),
+    @XmlEnumValue("Female") FEMALE("Female"),
+    @XmlEnumValue("Transgender") TRANSGENDER("Transgender"),
+    @XmlEnumValue("Non-binary") NON_BINARY("Non-binary");
 
     private String name;
 
-    private Gender(String name) {
+    Gender(String name) {
         this.name = name;
     }
 
