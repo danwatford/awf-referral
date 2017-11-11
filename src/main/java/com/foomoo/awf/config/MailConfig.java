@@ -3,12 +3,6 @@ package com.foomoo.awf.config;
 import org.apache.commons.configuration2.PropertiesConfiguration;
 import org.apache.commons.configuration2.builder.fluent.Configurations;
 import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.commons.io.IOUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 
 /**
  * Configuration for forwarding submitted referrals by email.
@@ -35,11 +29,6 @@ public class MailConfig {
      */
     public static final String CONFIRMATION_SUBJECT;
 
-    /**
-     * Template for the html body of confirmation emails.
-     */
-    public static final String CONFIRMATION_BODY_TEMPLATE;
-
     private static final String PROPS_FILE_NAME = "mail.properties";
 
     static {
@@ -57,11 +46,7 @@ public class MailConfig {
 
             CONFIRMATION_SUBJECT = properties.getString("main.confirmation.subject");
 
-            final String confirmationTemplate = properties.getString("main.confirmation.body.html.template");
-            final InputStream templateStream = Files.newInputStream(CommonConfig.getConfigDirectory()
-                                                                                .resolve(confirmationTemplate));
-            CONFIRMATION_BODY_TEMPLATE = IOUtils.toString(templateStream, StandardCharsets.UTF_8);
-        } catch (ConfigurationException | IOException e) {
+        } catch (ConfigurationException e) {
             throw new RuntimeException(e);
         }
     }

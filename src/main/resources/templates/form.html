@@ -1,0 +1,284 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+
+    <title>Amy&#039;s Yard Referral</title>
+
+    <meta name="description" content="Amy&#039;s Yard Referral Form"/>
+    <meta name="author" content="Watford Consulting Ltd."/>
+    <link rel="icon" href="favicon.ico"/>
+
+    <!-- Bootstrap -->
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+    <link href="css/ie10-viewport-bug-workaround.css" rel="stylesheet"/>
+
+    <link rel="canonical" href="http://awf.watfordconsulting.com"/>
+
+    <link href="css/awfreferral.css" rel="stylesheet"/>
+</head>
+
+<body>
+<div class="container">
+    <form class="form-horizontal" action="#" th:action="@{/}" th:object="${referral}" method="post">
+        <fieldset>
+            <legend>Details of the young person you would like to refer to the project</legend>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('applicantName')}" class="col-md-4 control-label">Full Name</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantName')}? has-error">
+                    <input type="text" th:field="*{applicantName}"
+                           class="form-control input-md" placeholder="Full Name"/>
+                    <div th:if="${#fields.hasErrors('applicantName')}" th:errors="*{applicantName}" class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('applicantDateOfBirth')}" class="col-md-4 control-label">Date of
+                    Birth</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantDateOfBirth')}? has-error">
+                    <input type="date" th:field="*{applicantDateOfBirth}"
+                           class="form-control input-md" placeholder="Date of Birth"/>
+                    <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}"
+                         class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label">Gender</label>
+                <div class="col-md-6">
+                    <li th:each="gender : ${allGenders}" class="radio">
+                        <input type="radio" th:field="*{applicantGender}" th:value="${gender}"/>
+                        <label th:for="${#ids.prev('applicantGender')}" th:text="${gender.name}"/>
+                    </li>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('applicantAddress')}" class="col-md-4 control-label">Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantAddress')}? has-error">
+                    <textarea class="form-control input-md"
+                              placeholder="Address" rows="5" th:field="*{applicantAddress}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('applicantAddress')}" th:errors="*{applicantAddress}"
+                         class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="applicantTelephone" class="col-md-4 control-label">Telephone Number</label>
+                <div class="col-md-6">
+                    <input type="text" id="applicantTelephone" class="form-control input-md"
+                           placeholder="Telephone Number" th:field="*{applicantTelephone}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('applicantEmail')}" class="col-md-4 control-label">Email Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantEmail')}? has-error">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Email address" th:field="*{applicantEmail}"/>
+                    <div th:if="${#fields.hasErrors('applicantEmail')}" th:errors="*{applicantEmail}"
+                         class="help-block"/>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Details of your role and organisation</legend>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerName')}" class="col-md-4 control-label">Name</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerName')}? has-error">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Name" th:field="*{referrerName}"/>
+                    <div th:if="${#fields.hasErrors('referrerName')}" th:errors="*{referrerName}"
+                         class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerJobTitle')}" class="col-md-4 control-label">Job Title</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Job Title" th:field="*{referrerJobTitle}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerOrganisation')}" class="col-md-4 control-label">Organisation</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerOrganisation')}? has-error">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Organisation" th:field="*{referrerOrganisation}"/>
+                    <div th:if="${#fields.hasErrors('referrerOrganisation')}" th:errors="*{referrerOrganisation}"
+                         class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerAddress')}" class="col-md-4 control-label">Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerAddress')}? has-error">
+                    <textarea class="form-control input-md"
+                              placeholder="Address"
+                              rows="5" th:field="*{referrerAddress}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('referrerAddress')}" th:errors="*{referrerAddress}"
+                         class="help-block"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerTelephone')}" class="col-md-4 control-label">Telephone Number</label>
+                <div class="col-md-6">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Telephone Number" th:field="*{referrerTelephone}"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerEmail')}" class="col-md-4 control-label">Email Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerEmail')}? has-error">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Email Address" th:field="*{referrerEmail}"/>
+                    <div th:if="${#fields.hasErrors('referrerEmail')}" th:errors="*{referrerEmail}"
+                         class="help-block"/>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please tell us about the young person you are referring:</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea id="aboutApplicant" class="form-control input-md"
+                              rows="5" th:field="*{aboutApplicant}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>How long have you been working with them?</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea id="howLongWorking" class="form-control input-md"
+                              rows="5" th:field="*{howLongWorking}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>How were they referred to your organisation?</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea id="howWereTheyReferred" class="form-control input-md"
+                              rows="5" th:field="*{howReferred}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>How are you currently supporting them, and with what areas of their life?</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea id="howSupportingApplicant" class="form-control input-md"
+                              rows="5" th:field="*{howSupportingApplicant}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Do they have any additional needs we should be aware of?</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea id="anyAdditionalNeeds" class="form-control input-md"
+                              rows="5" th:field="*{anyAdditionalNeeds}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Do any of the following apply?</legend>
+
+            <div class="form-group">
+                <label for="applicableCircumstances"
+                       class="col-md-4 control-label">Select any that apply</label>
+                <div class="col-md-6">
+                    <li th:each="circ : ${allApplicableCircumstances}" class="checkbox">
+                        <input type="checkbox" th:field="*{applicableCircumstances}" th:value="${circ}"/>
+                        <label th:for="${#ids.prev('applicableCircumstances')}" th:text="${circ.name}"/>
+                    </li>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"
+                       for="specificDetails">Please provide specific details so we are
+                    able to support individual needs</label>
+                <div class="col-md-4">
+                    <textarea id="specificDetails" class="form-control input-md"
+                              rows="5" th:field="*{circumstanceSpecificDetails}">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="otherProfessionalSupport">
+                    Are they accessing any other professional support?
+                </label>
+                <div class="col-md-4">
+                    <textarea id="otherProfessionalSupport" class="form-control input-md"
+                              rows="5" th:field="*{otherProfessionalSupport}">
+                    </textarea>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label"
+                       for="prescribedMedication">Do they take any prescribed medication?
+                    If so please provide details</label>
+                <div class="col-md-4">
+                    <textarea id="prescribedMedication" class="form-control input-md"
+                              rows="5" th:field="*{prescribedMedication}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <blockquote>
+            <h4>
+                Please Note: You must have permission to share this information with us from the individual you are
+                referring.
+                No personal information given to AWF will be passed to other agencies and is for internal use only, with
+                the purpose of supporting programme participants.
+            </h4>
+        </blockquote>
+
+        <button type="submit">Submit</button>
+    </form>
+</div>
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script type="application/javascript" src="js/jquery-1.10.2.min.js"></script>
+<!-- Include all compiled plugins (below), or include individual files as needed -->
+<script type="application/javascript" src="js/bootstrap.min.js"></script>
+<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+<script type="application/javascript" src="js/ie10-viewport-bug-workaround.js"></script>
+
+<script type="application/javascript" src="js/iframeResizer.contentWindow.js"></script>
+</body>
+
+</html>

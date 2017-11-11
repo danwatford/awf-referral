@@ -20,44 +20,38 @@ This project is concerned with providing an online method to submit referrals to
 
 ## Current Implementation
 
-This project has been implemented as a wildfly swarm solution.
+This project has been implemented as a spring-boot solution.
 
-The solution publishes a JSF page, form.xhtml, to capture the details of a referral.
+The solution publishes a form, based on a thymeleaf template, to caputre the details of a referral.
 The form can be embedded in an iframe on another website. Page inframetest.html exercises that the iframe can be resized along with the form through use of iframe-resizer (https://github.com/davidjbradshaw/iframe-resizer).
 
 ### Running
-This project runs on Wildfly Swarm and depends on configuration being in place for sending emails.
+This project is based on spring-boot and depends on configuration being in place for sending emails.
 
-Create file awf-referral.yml in the parent directory of the project with contents similar to the following:
+Create file application.yml in the working directory (root) of the project with contents similar to the following:
 
 ```
-swarm:
-  network:
-    socket-binding-groups:
-      standard-sockets:
-        outbound-socket-bindings:
-          mail-smtp:
-            remote-host: <smtp-server-address>
-            remote-port: <smtp-server-port: probably 587>
+spring:
   mail:
-    mail-sessions:
-      AWF:
-        jndi-name: java:/mail/awf-mail
-        smtp-server:
-          outbound-socket-binding-ref: mail-smtp
-          username: <username>
-          password: <password>
-          tls: true
+    host: <smtp-server-address>
+    port: <smtp-server-port: probably 587>
+    username: <username>
+    password: <password>
+    properties:
+      mail:
         debug: true
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 ```
 
 To build and run the solution execute:
 ```
-mvn wildfly-swarm:run
+mvn spring-boot:run
 ```
 
-Alternatively run or debug class `org.wildfly.swarm.Swarm` from your IDE with VM 
-arg `-Dswarm.project.stage.file=../awf-referral.yml`. Before using this method run 
+Alternatively run or debug class `com.foomoo.awf.Application` from your IDE. Before using this method run 
 using maven first to ensure all required dependencies are downloaded to the local 
 maven repository.
 
@@ -67,15 +61,15 @@ To build this project as a docker container run:
 
 This will create a docker image at repository danwatford/awf-referral:_version_. 
 
-The docker image relies on the awf-referral.yml file being created at /usr/share/awf-referral/etc.
-This file should be created in a volume called awf-referral-vol. Possible steps to create the volume
+The docker image relies on the application.yml file being created at /config.
+This file should be created in a volume called awf-referral-config-vol. Possible steps to create the volume
 and file are:
 - Run the container to populate the volume with a template configuration file:
-```docker run --name awf-referral --mount source=awf-referral-vol,destination=/usr/share/awf-referral/etc --publish 8080:8080 danwatford/awf-referral:0.0.1-SNAPSHOT```  
+```docker run --name awf-referral --mount source=awf-referral-config-vol,destination=/config --publish 8080:8080 danwatford/awf-referral:0.0.1-SNAPSHOT```  
 - Stop the container using Ctrl-C or ```docker stop awf-referral```
-- Find the location of the awf-referral-vol volume on the docker host: ```docker volume inspect awf-referral-vol```
-- At the awf-referral-vol volume location, copy file awf-referral-template.yml to awf-referral.yml. (You will probably need to 
-be root to do this.) Edit awf-referral.yml with your mail server details.
+- Find the location of the awf-referral-config-vol volume on the docker host: ```docker volume inspect awf-referral-config-vol```
+- At the awf-referral-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
+be root to do this.) Edit application.yml with your mail server details.
 - Start the container again: ```docker start awf-referral```
 - Monitor the container: ```docker logs -f awf-referral```
 

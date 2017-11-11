@@ -1,9 +1,11 @@
 package com.foomoo.awf.pojo;
 
 import com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableSet;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Populates a {@link com.foomoo.awf.pojo.Referral} with dummy data to assist testing.
@@ -14,7 +16,7 @@ public class ReferralPopulator {
 
         referral.setApplicantName("Applicant Name");
         referral.setApplicantDateOfBirth(LocalDate.of(1999, 9, 30));
-        referral.setApplicantGender("Female");
+        referral.setApplicantGender(Gender.FEMALE);
         referral.setApplicantAddress("Applicant Address Line 1\nAddress Line 2");
         referral.setApplicantTelephone("01234 123456");
         referral.setApplicantEmail("app@example.com");
@@ -42,7 +44,10 @@ public class ReferralPopulator {
         referral.setAnyAdditionalNeeds("Additional Needs Line 1 Additional Needs Line 1 Additional Needs Line 1 \n" +
                 "Additional Needs Line 2 Additional Needs Line 2 Additional Needs Line 2 ");
 
-        referral.setApplicableCircumstances(new ArrayList<>(ImmutableList.of("Homelessness", "Eating Disorder", "History of Offending", "Self Harm", "Other")));
+        referral.setApplicableCircumstances(ImmutableSet.of(ApplicableCircumstance.HOMELESSNESS,
+                ApplicableCircumstance.EATING_DISORDER, ApplicableCircumstance.HISTORY_OF_OFFENDING,
+                ApplicableCircumstance.SELF_HARM, ApplicableCircumstance.ADDITIONAL_LEARNING_NEEDS,
+                ApplicableCircumstance.OTHER));
         referral.setCircumstanceSpecificDetails("Circumstances Details Line 1 Circumstances Details Line 1 Circumstances Details Line 1 \n" +
                 "Circumstances Details Line 2 Circumstances Details Line 2 Circumstances Details Line 2 \n" +
                 "Circumstances Details Line 3 Circumstances Details Line 3 Circumstances Details Line 3 ");

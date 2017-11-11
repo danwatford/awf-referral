@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <referral>
+    <applicableCircumstances>Additional Learning Needs</applicableCircumstances>
+    <applicableCircumstances>Homelessness</applicableCircumstances>
+    <applicableCircumstances>Other</applicableCircumstances>
     <applicantAddress>Applicant address
 second line</applicantAddress>
     <applicantDateOfBirth>1999-01-12</applicantDateOfBirth>
