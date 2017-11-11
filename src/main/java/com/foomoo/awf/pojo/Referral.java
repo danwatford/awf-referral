@@ -1,7 +1,9 @@
 package com.foomoo.awf.pojo;
 
+import com.foomoo.awf.config.ValidationConfig;
 import com.foomoo.awf.render.LocalDateAdapter;
 import com.foomoo.awf.render.ZonedDateTimeAdapter;
+import com.foomoo.awf.validators.ApplicantMinimumAgeConstraint;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,10 +22,13 @@ import java.util.Set;
 @XmlRootElement
 public class Referral implements Serializable {
 
+    private static final String OLD_ENOUGH_MSG = "Not old enough: " + ValidationConfig.APPLICANT_DOB_MAX;
+
     @NotNull(message = "Please enter the applicant''s name.")
     private String applicantName;
     @NotNull(message = "Please enter the applicant''s date of birth.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @ApplicantMinimumAgeConstraint
     private LocalDate applicantDateOfBirth;
     private Gender applicantGender;
     @NotNull(message = "Please enter the applicant''s address.")
