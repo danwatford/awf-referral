@@ -55,24 +55,26 @@ Alternatively run or debug class `com.foomoo.awf.Application` from your IDE. Bef
 using maven first to ensure all required dependencies are downloaded to the local 
 maven repository.
 
-### Running with Docker
+### Building with Docker
 To build this project as a docker container run:
 ```mvn -P docker package```
 
-This will create a docker image at repository danwatford/awf-referral:_version_. 
+This will create a docker image at repository danwatford/awf-referral:_version_. These details can be changed in pom.xml.
+
+### Running with Docker
+Docker images are published to <https://hub.docker.com/r/danwatford/awf-referral>.
+
+If not building your own image, pull an image using a command similar to:
+```docker pull danwatford/awf-referral:0.1.0```
 
 The docker image relies on the application.yml file being created at /config.
 This file should be created in a volume called awf-referral-config-vol. Possible steps to create the volume
 and file are:
 - Run the container to populate the volume with a template configuration file:
-```docker run --name awf-referral --mount source=awf-referral-config-vol,destination=/config --publish 8080:8080 danwatford/awf-referral:0.0.1-SNAPSHOT```  
-- Stop the container using Ctrl-C or ```docker stop awf-referral```
+```docker run --name awf-referral --mount source=awf-referral-config-vol,destination=/config --publish 8080:8080 danwatford/awf-referral:0.1.0```  
+- The container should stop due to not being able to find a JavaMail bean. If the container doesn't stop use Ctrl-C or ```docker stop awf-referral```
 - Find the location of the awf-referral-config-vol volume on the docker host: ```docker volume inspect awf-referral-config-vol```
-- At the awf-referral-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
+- At the awf-referral-config-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
 be root to do this.) Edit application.yml with your mail server details.
 - Start the container again: ```docker start awf-referral```
 - Monitor the container: ```docker logs -f awf-referral```
-
-## To Do
-Following submission of a referral:
-- Validate all required fields have been entered. Display appropriate error messages to the user if any information is missing.
