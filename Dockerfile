@@ -1,4 +1,4 @@
-FROM openjdk:8
+FROM openjdk:8-jre-alpine
 MAINTAINER Daniel Watford <daniel@watfordconsulting.com>
 
 ENTRYPOINT ["/usr/bin/java", \
