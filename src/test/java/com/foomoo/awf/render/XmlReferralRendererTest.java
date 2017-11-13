@@ -5,6 +5,7 @@ import com.foomoo.awf.pojo.Gender;
 import com.foomoo.awf.pojo.Referral;
 import com.google.common.collect.ImmutableSet;
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.assertThat;
 
 /**
  * Tests for the {@link XmlReferralRenderer} class.
@@ -51,7 +52,6 @@ public class XmlReferralRendererTest {
         final XmlReferralRenderer xmlReferralRenderer = new XmlReferralRenderer();
         final String renderedXml = xmlReferralRenderer.render(referral);
 
-        assertEquals(expectedXml, renderedXml);
-
+        assertThat(renderedXml, Matchers.equalToIgnoringWhiteSpace(expectedXml));
     }
 }
