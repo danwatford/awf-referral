@@ -26,6 +26,12 @@
 <body>
 <div class="container">
     <form class="form-horizontal" action="#" th:action="@{/}" th:object="${referral}" method="post">
+
+        <button type="submit" name="action" value="submit">Submit Referral</button>
+        <button type="submit" name="action" value="save">Save for Later</button>
+        <button type="submit" name="action" value="clear">Clear Form</button>
+        <button type="submit" name="action" value="test-data">Populate with test data</button>
+
         <fieldset>
             <legend>Details of the young person you would like to refer to the project</legend>
 
@@ -133,7 +139,8 @@
             </div>
 
             <div class="form-group">
-                <label th:for="${#ids.next('referrerTelephone')}" class="col-md-4 control-label">Telephone Number</label>
+                <label th:for="${#ids.next('referrerTelephone')}" class="col-md-4 control-label">Telephone
+                    Number</label>
                 <div class="col-md-6">
                     <input type="text" class="form-control input-md"
                            placeholder="Telephone Number" th:field="*{referrerTelephone}"/>
@@ -267,8 +274,11 @@
                 the purpose of supporting programme participants.
             </h4>
         </blockquote>
-
-        <button type="submit">Submit</button>
+        
+        <button type="submit" name="action" value="submit">Submit Referral</button>
+        <button type="submit" name="action" value="save">Save for Later</button>
+        <button type="submit" name="action" value="clear">Clear Form</button>
+        <button type="submit" name="action" value="test-data">Populate with test data</button>
     </form>
 </div>
 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

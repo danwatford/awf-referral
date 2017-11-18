@@ -22,11 +22,13 @@ This project is concerned with providing an online method to submit referrals to
 
 This project has been implemented as a spring-boot solution.
 
-The solution publishes a form, based on a thymeleaf template, to caputre the details of a referral.
+The solution publishes a form, based on a thymeleaf template, to capture the details of a referral.
 The form can be embedded in an iframe on another website. Page inframetest.html exercises that the iframe can be resized along with the form through use of iframe-resizer (https://github.com/davidjbradshaw/iframe-resizer).
 
 ### Running
-This project is based on spring-boot and depends on configuration being in place for sending emails.
+This project is based on spring-boot and depends on a Mongo instance for storing
+session data. Configuration needs to be in place to specify an email server and
+details of the Mongo instance.
 
 Create file application.yml in the working directory (root) of the project with contents similar to the following:
 
@@ -44,6 +46,12 @@ spring:
           auth: true
           starttls:
             enable: true
+  data:
+    mongodb:
+      uri: mongodb://192.168.99.100/awf
+  session:
+    type:
+      store-type: mongo
 ```
 
 To build and run the solution execute:
