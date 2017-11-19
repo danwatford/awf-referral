@@ -73,16 +73,68 @@ This will create a docker image at repository danwatford/awf-referral:_version_.
 Docker images are published to <https://hub.docker.com/r/danwatford/awf-referral>.
 
 If not building your own image, pull an image using a command similar to:
-```docker pull danwatford/awf-referral:0.1.0```
+```docker pull danwatford/awf-referral:0.2.0```
 
 The docker image relies on the application.yml file being created at /config.
 This file should be created in a volume called awf-referral-config-vol. Possible steps to create the volume
 and file are:
 - Run the container to populate the volume with a template configuration file:
-```docker run --name awf-referral --mount source=awf-referral-config-vol,destination=/config --publish 8080:8080 danwatford/awf-referral:0.1.0```  
+```docker run --name awf-referral --mount source=awf-referral-config-vol,destination=/config --publish 8080:8080 danwatford/awf-referral:0.2.0```  
 - The container should stop due to not being able to find a JavaMail bean. If the container doesn't stop use Ctrl-C or ```docker stop awf-referral```
 - Find the location of the awf-referral-config-vol volume on the docker host: ```docker volume inspect awf-referral-config-vol```
 - At the awf-referral-config-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
 be root to do this.) Edit application.yml with your mail server details.
 - Start the container again: ```docker start awf-referral```
 - Monitor the container: ```docker logs -f awf-referral```
+
+### Running with Docker-Compose
+
+Create a docker-compose.yml file similar to the following:
+```
+version: '3.2'
+services:
+  awf-referral:
+    image: danwatford/awf-referral:0.2.0
+    container_name: awf-referral
+    volumes:
+      - type: volume
+        source: awf-referral-config-vol
+        target: /config
+    ports:
+      - "8080:8080"
+
+  mongo-awf:
+    image: mongo
+    container_name: mongoawf
+    volumes:
+      - type: volume
+        source: mongo-data-vol
+        target: /data/db
+      - type: volume
+        source: mongo-config-vol
+        target: /data/configdb
+    expose:
+      - "27017"
+
+volumes:
+  awf-referral-config-vol:
+  mongo-data-vol:
+  mongo-config-vol:
+```
+
+The awf-referral docker image relies on the application.yml file being created at /config.
+This file should be created in the awf-referral-config-vol volume. Possible steps to create the volume
+and file are:
+- Run docker-compose from the directory containing the docker-compose.yml file:
+```docker-compose up -d```
+- This will create the volume <docker-compose-project-name>_awf-referral-config-vol and populate it with a template
+configuration file.
+- Stop and remove the containers:
+```docker-compose stop``` and then
+```docker-compose rm```
+- Find the location of the awf-referral-config-vol volume on the docker host: 
+```docker volume inspect <docker-compose-project-name>_awf-referral-config-vol```
+- At the awf-referral-config-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
+be root to do this.) Edit application.yml with your mail server details.
+- Start the docker-compose project again: ```docker-compose start```
+- Monitor the container: ```docker-compose logs -f```
