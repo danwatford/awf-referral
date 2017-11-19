@@ -11,3 +11,9 @@ spring:
           auth: true
           starttls:
             enable: true
+  data:
+    mongodb:
+      uri: mongodb://mongoawf/awf
+  session:
+    type:
+      store-type: mongo
