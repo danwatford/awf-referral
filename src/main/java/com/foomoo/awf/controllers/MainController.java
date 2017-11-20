@@ -115,6 +115,10 @@ public class MainController {
             return "form";
         } else {
             referralSubmitter.submit(referral);
+
+            // Clear the referral from the session.
+            setReferralOnSession(session, new Referral());
+
             return "thanks";
         }
     }
