@@ -3,3 +3,4 @@ target/
 *.iml
 /application.yml
 docker-compose.yml
+pom.xml.versionsBackup
