@@ -1,12 +1,12 @@
 package com.foomoo.awf.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.foomoo.awf.render.LocalDateAdapter;
 import com.foomoo.awf.render.ZonedDateTimeAdapter;
-import com.foomoo.awf.validators.ApplicantMinimumAgeConstraint;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -29,7 +29,6 @@ public class Referral implements Serializable {
     private String applicantName;
     @NotNull(message = "Please enter the applicant''s date of birth.")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @ApplicantMinimumAgeConstraint
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate applicantDateOfBirth;
@@ -52,6 +51,9 @@ public class Referral implements Serializable {
     @NotNull(message = "Please enter your email address.")
     @Email(message = "Your email address format is invalid.")
     private String referrerEmail;
+    @NotNull(message = "Please confirm your email address.")
+    @Email(message = "Your email address format is invalid.")
+    private String referrerEmailConfirmation;
 
     private String aboutApplicant;
     private String howLongWorking;
@@ -77,6 +79,7 @@ public class Referral implements Serializable {
 
     private String whyReady;
 
+    @JsonIgnore
     private ZonedDateTime submissionDateTime;
 
     /**
@@ -183,6 +186,14 @@ public class Referral implements Serializable {
 
     public void setReferrerEmail(final String referrerEmail) {
         this.referrerEmail = referrerEmail;
+    }
+
+    public String getReferrerEmailConfirmation() {
+        return referrerEmailConfirmation;
+    }
+
+    public void setReferrerEmailConfirmation(final String referrerEmailConfirmation) {
+        this.referrerEmailConfirmation = referrerEmailConfirmation;
     }
 
     public String getAboutApplicant() {

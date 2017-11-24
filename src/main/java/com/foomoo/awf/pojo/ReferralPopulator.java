@@ -1,11 +1,8 @@
 package com.foomoo.awf.pojo;
 
-import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSet;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Populates a {@link com.foomoo.awf.pojo.Referral} with dummy data to assist testing.
@@ -27,6 +24,7 @@ public class ReferralPopulator {
         referral.setReferrerAddress("Referrer Address Line 1\nAddress Line 2\nLine 3\nLine 4");
         referral.setReferrerTelephone("09876 543 2121");
         referral.setReferrerEmail("ref@example.com");
+        referral.setReferrerEmailConfirmation(referral.getReferrerEmail());
 
         referral.setAboutApplicant("About Line 1 About Line 1 About Line 1 About Line 1 About Line 1 About Line 1 " +
                 "About Line 1 \nAbout Line 2 About Line 2 About Line 2 About Line 2 \n\n" +

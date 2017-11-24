@@ -156,6 +156,16 @@
                          class="help-block"/>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('referrerEmailConfirmation')}" class="col-md-4 control-label">Confirm Email Address</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerEmailConfirmation')}? has-error">
+                    <input type="text" class="form-control input-md"
+                           placeholder="Email Address" th:field="*{referrerEmailConfirmation}"/>
+                    <div th:if="${#fields.hasErrors('referrerEmailConfirmation')}" th:errors="*{referrerEmailConfirmation}"
+                         class="help-block"/>
+                </div>
+            </div>
         </fieldset>
 
         <fieldset>
