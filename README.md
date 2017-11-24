@@ -89,6 +89,8 @@ be root to do this.) Edit application.yml with your mail server details.
 
 ### Running with Docker-Compose
 
+To deploy with SSL support please see the [Deployment Guide](deployment-guide.md).
+
 Create a docker-compose.yml file similar to the following:
 ```
 version: '3.2'
