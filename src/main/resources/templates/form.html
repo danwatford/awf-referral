@@ -40,7 +40,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantName')}? has-error">
                     <input type="text" th:field="*{applicantName}"
                            class="form-control input-md" placeholder="Full Name"/>
-                    <div th:if="${#fields.hasErrors('applicantName')}" th:errors="*{applicantName}" class="help-block"/>
+                    <div th:if="${#fields.hasErrors('applicantName')}" th:errors="*{applicantName}" class="help-block"></div>
                 </div>
             </div>
 
@@ -50,8 +50,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantDateOfBirth')}? has-error">
                     <input type="date" th:field="*{applicantDateOfBirth}"
                            class="form-control input-md" placeholder="Date of Birth"/>
-                    <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}" class="help-block"></div>
                 </div>
             </div>
 
@@ -60,7 +59,7 @@
                 <div class="col-md-6">
                     <li th:each="gender : ${allGenders}" class="radio">
                         <input type="radio" th:field="*{applicantGender}" th:value="${gender}"/>
-                        <label th:for="${#ids.prev('applicantGender')}" th:text="${gender.name}"/>
+                        <label th:for="${#ids.prev('applicantGender')}" th:text="${gender.name}"></label>
                     </li>
                 </div>
             </div>
@@ -71,8 +70,7 @@
                     <textarea class="form-control input-md"
                               placeholder="Address" rows="5" th:field="*{applicantAddress}">
                     </textarea>
-                    <div th:if="${#fields.hasErrors('applicantAddress')}" th:errors="*{applicantAddress}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('applicantAddress')}" th:errors="*{applicantAddress}" class="help-block"></div>
                 </div>
             </div>
 
@@ -89,8 +87,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantEmail')}? has-error">
                     <input type="text" class="form-control input-md"
                            placeholder="Email address" th:field="*{applicantEmail}"/>
-                    <div th:if="${#fields.hasErrors('applicantEmail')}" th:errors="*{applicantEmail}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('applicantEmail')}" th:errors="*{applicantEmail}" class="help-block"></div>
                 </div>
             </div>
         </fieldset>
@@ -103,8 +100,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerName')}? has-error">
                     <input type="text" class="form-control input-md"
                            placeholder="Name" th:field="*{referrerName}"/>
-                    <div th:if="${#fields.hasErrors('referrerName')}" th:errors="*{referrerName}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('referrerName')}" th:errors="*{referrerName}" class="help-block"></div>
                 </div>
             </div>
 
@@ -121,8 +117,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerOrganisation')}? has-error">
                     <input type="text" class="form-control input-md"
                            placeholder="Organisation" th:field="*{referrerOrganisation}"/>
-                    <div th:if="${#fields.hasErrors('referrerOrganisation')}" th:errors="*{referrerOrganisation}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('referrerOrganisation')}" th:errors="*{referrerOrganisation}" class="help-block"></div>
                 </div>
             </div>
 
@@ -133,8 +128,7 @@
                               placeholder="Address"
                               rows="5" th:field="*{referrerAddress}">
                     </textarea>
-                    <div th:if="${#fields.hasErrors('referrerAddress')}" th:errors="*{referrerAddress}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('referrerAddress')}" th:errors="*{referrerAddress}" class="help-block"></div>
                 </div>
             </div>
 
@@ -152,8 +146,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerEmail')}? has-error">
                     <input type="text" class="form-control input-md"
                            placeholder="Email Address" th:field="*{referrerEmail}"/>
-                    <div th:if="${#fields.hasErrors('referrerEmail')}" th:errors="*{referrerEmail}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('referrerEmail')}" th:errors="*{referrerEmail}" class="help-block"></div>
                 </div>
             </div>
 
@@ -162,8 +155,7 @@
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('referrerEmailConfirmation')}? has-error">
                     <input type="text" class="form-control input-md"
                            placeholder="Email Address" th:field="*{referrerEmailConfirmation}"/>
-                    <div th:if="${#fields.hasErrors('referrerEmailConfirmation')}" th:errors="*{referrerEmailConfirmation}"
-                         class="help-block"/>
+                    <div th:if="${#fields.hasErrors('referrerEmailConfirmation')}" th:errors="*{referrerEmailConfirmation}" class="help-block"></div>
                 </div>
             </div>
         </fieldset>
@@ -237,7 +229,7 @@
                 <div class="col-md-6">
                     <li th:each="circ : ${allApplicableCircumstances}" class="checkbox">
                         <input type="checkbox" th:field="*{applicableCircumstances}" th:value="${circ}"/>
-                        <label th:for="${#ids.prev('applicableCircumstances')}" th:text="${circ.name}"/>
+                        <label th:for="${#ids.prev('applicableCircumstances')}" th:text="${circ.name}"></label>
                     </li>
                 </div>
             </div>
