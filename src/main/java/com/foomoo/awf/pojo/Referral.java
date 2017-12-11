@@ -28,7 +28,7 @@ public class Referral implements Serializable {
     @NotNull(message = "Please enter the applicant''s name.")
     private String applicantName;
     @NotNull(message = "Please enter the applicant''s date of birth.")
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "dd/MM/yyyy")
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate applicantDateOfBirth;

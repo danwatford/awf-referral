@@ -48,8 +48,8 @@
                 <label th:for="${#ids.next('applicantDateOfBirth')}" class="col-md-4 control-label">Date of
                     Birth</label>
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantDateOfBirth')}? has-error">
-                    <input type="date" th:field="*{applicantDateOfBirth}"
-                           class="form-control input-md" placeholder="Date of Birth"/>
+                    <input type="text" th:field="*{applicantDateOfBirth}"
+                           class="form-control input-md" placeholder="dd/mm/yyyy" required="true"/>
                     <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}" class="help-block"></div>
                 </div>
             </div>
