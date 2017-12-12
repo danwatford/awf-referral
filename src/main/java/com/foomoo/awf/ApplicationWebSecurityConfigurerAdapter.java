@@ -1,16 +1,27 @@
 package com.foomoo.awf;
 
+import com.foomoo.awf.config.AppAdminConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrincipalExtractor;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.OAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.filter.OAuth2ClientContextFilter;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Configuration
 @EnableOAuth2Sso
@@ -25,7 +36,7 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/**").permitAll()
             .and()
                 .logout().logoutUrl("/").clearAuthentication(true).permitAll();
@@ -44,4 +55,53 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
         return new OAuth2RestTemplate(details, oAuth2ClientContext);
     }
 
+    @Bean
+    public UserInfoTokenServices userInfoTokenServices(ResourceServerProperties resourceServerProperties, AppAdminConfig appAdminConfig) {
+        final UserInfoTokenServices userInfoTokenServices =
+                new UserInfoTokenServices(resourceServerProperties.getUserInfoUri(),
+                        resourceServerProperties.getClientId());
+
+        userInfoTokenServices.setPrincipalExtractor(new MsGraphPrincipalExtractor());
+        userInfoTokenServices.setAuthoritiesExtractor(new DomainBasedAuthorityExtractor(appAdminConfig.getDomain()));
+
+        return userInfoTokenServices;
+    }
+
+    /**
+     * Extract the principal from the user details map using keys for Microsoft's Graph API. Fall back to the
+     * {@link org.springframework.boot.autoconfigure.security.oauth2.resource.FixedPrincipalExtractor} if no
+     * principal is found.
+     */
+    private static class MsGraphPrincipalExtractor extends FixedPrincipalExtractor {
+
+        static final String PRICIPAL_KEY = "userPrincipalName";
+
+        @Override
+        public Object extractPrincipal(final Map<String, Object> map) {
+            if (map.containsKey(PRICIPAL_KEY)) {
+                return map.get(PRICIPAL_KEY);
+            } else {
+                return super.extractPrincipal(map);
+            }
+        }
+    }
+
+    private static class DomainBasedAuthorityExtractor implements AuthoritiesExtractor {
+
+        private final String domain;
+
+        public DomainBasedAuthorityExtractor(String domain) {
+            this.domain = domain;
+        }
+
+        @Override
+        public List<GrantedAuthority> extractAuthorities(Map<String, Object> map) {
+            final String name = map.getOrDefault(MsGraphPrincipalExtractor.PRICIPAL_KEY, "").toString();
+            if (name.toLowerCase().endsWith(domain.toLowerCase())) {
+                return Collections.singletonList(new SimpleGrantedAuthority("ADMIN"));
+            } else {
+                return Collections.emptyList();
+            }
+        }
+    }
 }
