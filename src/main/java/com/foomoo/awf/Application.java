@@ -3,7 +3,10 @@ package com.foomoo.awf;
 import com.foomoo.awf.converters.LocalDateConverter;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 import org.springframework.format.FormatterRegistry;
+import org.springframework.session.data.mongo.AbstractMongoSessionConverter;
+import org.springframework.session.data.mongo.JdkMongoSessionConverter;
 import org.springframework.session.data.mongo.config.annotation.web.http.EnableMongoHttpSession;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -17,5 +20,10 @@ public class Application extends WebMvcConfigurerAdapter {
     @Override
     public void addFormatters(final FormatterRegistry registry) {
         registry.addConverter(new LocalDateConverter());
+    }
+
+    @Bean
+    public AbstractMongoSessionConverter mongoSessionConverter() {
+        return new JdkMongoSessionConverter();
     }
 }

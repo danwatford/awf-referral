@@ -27,8 +27,10 @@ The form can be embedded in an iframe on another website. Page inframetest.html 
 
 ### Running
 This project is based on spring-boot and depends on a Mongo instance for storing
-session data. Configuration needs to be in place to specify an email server and
-details of the Mongo instance.
+session data, and on OneDrive for storing submitted referrals.
+Configuration needs to be in place to specify an email server,
+details of the Mongo instance and the Office356 login domain
+for OneDrive access.
 
 Create file application.yml in the working directory (root) of the project with contents similar to the following:
 
@@ -52,6 +54,24 @@ spring:
   session:
     type:
       store-type: mongo
+security:
+  oauth2:
+    client:
+      id: <identifier for oauth2 server - e.g. MicrosoftOnline, Git, Facebook, etc>
+      clientId: <client id>
+      clientSecret: <client secret>
+      accessTokenUri: <e.g. https://login.microsoftonline.com/common/oauth2/v2.0/token>
+      userAuthorizationUri: <e.g. https://login.microsoftonline.com/common/oauth2/v2.0/authorize>
+      clientAuthenticationScheme: form
+      scope: openid,files.readwrite,offline_access,user.read
+    resource:
+      userInfoUri: <e.g. https://graph.microsoft.com/v1.0/me>
+app:
+  admin:
+    domain: <domain for admin users - e.g. "@example.com">
+  onedrive:
+    folder: amys-yard-2018
+    baseUri: https://graph.microsoft.com/v1.0/me/drive/
 ```
 
 To build and run the solution execute:

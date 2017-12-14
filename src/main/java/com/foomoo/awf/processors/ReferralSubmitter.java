@@ -1,6 +1,7 @@
 package com.foomoo.awf.processors;
 
 import com.foomoo.awf.pojo.Referral;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -14,11 +15,11 @@ public class ReferralSubmitter {
 
     private final ConfirmationHandler confirmationHandler;
 
-    private final SubmissionHandler submissionHandler;
+    @Autowired
+    OneDriveHandler oneDriveHandler;
 
     public ReferralSubmitter(ConfirmationHandler confirmationHandler, SubmissionHandler submissionHandler) {
         this.confirmationHandler = confirmationHandler;
-        this.submissionHandler = submissionHandler;
     }
 
     public String submit(final Referral referral) {
@@ -26,7 +27,7 @@ public class ReferralSubmitter {
         final ZoneId zoneId = ZoneId.of("Europe/London");
         referral.setSubmissionDateTime(ZonedDateTime.now(zoneId));
 
-        submissionHandler.handleSubmission(referral);
+        oneDriveHandler.handleSubmission(referral);
 
         confirmationHandler.sendConfirmation(referral.getReferrerEmail());
 

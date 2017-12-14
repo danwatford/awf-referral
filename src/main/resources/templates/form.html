@@ -49,7 +49,7 @@
                     Birth</label>
                 <div class="col-md-6" th:classappend="${#fields.hasErrors('applicantDateOfBirth')}? has-error">
                     <input type="text" th:field="*{applicantDateOfBirth}"
-                           class="form-control input-md" placeholder="dd/mm/yyyy" required="true"/>
+                           class="form-control input-md" placeholder="dd/mm/yyyy"/>
                     <div th:if="${#fields.hasErrors('applicantDateOfBirth')}" th:errors="*{applicantDateOfBirth}" class="help-block"></div>
                 </div>
             </div>
