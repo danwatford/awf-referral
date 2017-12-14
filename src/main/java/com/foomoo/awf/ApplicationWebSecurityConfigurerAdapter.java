@@ -29,7 +29,7 @@ import java.util.Map;
 
 @Configuration
 @EnableOAuth2Sso
-public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter{
+public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigurerAdapter {
 
     @Autowired
     OAuth2ClientContextFilter oAuth2ClientContextFilter;
@@ -39,6 +39,9 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/").permitAll();
+
+        // Allow embedding these pages in
+        http.headers().frameOptions().disable();
     }
 
     @Bean
@@ -46,7 +49,7 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
         final FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
         filterRegistrationBean.setFilter(filter);
         filterRegistrationBean.setOrder(-100);
-        return  filterRegistrationBean;
+        return filterRegistrationBean;
     }
 
     @Bean
