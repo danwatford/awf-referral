@@ -1,6 +1,8 @@
 package com.foomoo.awf;
 
 import com.foomoo.awf.config.AppAdminConfig;
+import com.foomoo.awf.config.AppOneDriveConfig;
+import com.foomoo.awf.onedrive.OneDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.AuthoritiesExtractor;
@@ -10,6 +12,7 @@ import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoT
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Scope;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,16 +33,11 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
     @Autowired
     OAuth2ClientContextFilter oAuth2ClientContextFilter;
 
-    @Autowired
-    OAuth2RestTemplate restTemplate;
-
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
-                .antMatchers("/**").permitAll()
-            .and()
-                .logout().logoutUrl("/").clearAuthentication(true).permitAll();
+                .antMatchers("/").permitAll();
     }
 
     @Bean
@@ -65,6 +63,12 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
         userInfoTokenServices.setAuthoritiesExtractor(new DomainBasedAuthorityExtractor(appAdminConfig.getDomain()));
 
         return userInfoTokenServices;
+    }
+
+    @Bean
+    @Scope("singleton")
+    public OneDriveService oneDriveService(final AppOneDriveConfig oneDriveConfig) {
+        return new OneDriveService(oneDriveConfig);
     }
 
     /**

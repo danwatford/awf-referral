@@ -32,3 +32,6 @@ security:
 app:
   admin:
     domain: <domain for admin users - e.g. "@example.com">
+  onedrive:
+    folder: amys-yard-2018
+    baseUri: https://graph.microsoft.com/v1.0/me/drive/
