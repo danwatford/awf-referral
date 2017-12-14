@@ -4,10 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foomoo.awf.config.AppOneDriveConfig;
+import com.foomoo.awf.oauth2.AccessTokenRepository;
+import com.foomoo.awf.oauth2.PersistableDefaultOAuth2AccessToken;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
+import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
@@ -15,21 +17,49 @@ import java.util.Collections;
 
 public class OneDriveService {
 
+    private static final int PERSISTED_TOKEN_ID = 1;
     private volatile OAuth2RestTemplate oAuth2RestTemplate;
 
     private final AppOneDriveConfig oneDriveConfig;
 
-    public OneDriveService(AppOneDriveConfig oneDriveConfig) {
+    private final AccessTokenRepository accessTokenRepository;
+
+    /**
+     * Construct the service based on the given configuration.
+     * Loads the application's access token from the given {@link AccessTokenRepository}.
+     * @param oneDriveConfig
+     */
+    public OneDriveService(AppOneDriveConfig oneDriveConfig, AccessTokenRepository accessTokenRepository,
+                           final OAuth2ProtectedResourceDetails details) {
         this.oneDriveConfig = oneDriveConfig;
+        this.accessTokenRepository = accessTokenRepository;
+
+        final PersistableDefaultOAuth2AccessToken accessToken = accessTokenRepository.findOne(PERSISTED_TOKEN_ID);
+        this.oAuth2RestTemplate = new OAuth2RestTemplate(details, new DefaultOAuth2ClientContext(accessToken));
     }
 
+    /**
+     * Prove the connection to OneDrive works with the given RestTemplate. The connection is exercised by
+     * retrieving the root information for the user's OneDrive. If the user has not granted appropriate permissions
+     * then an exception will be thrown.
+     * <p>
+     * If the connection is successful the access token will be saved for use by the web app when writing files to
+     * OneDrive.
+     *
+     * @param oAuth2RestTemplate The RestTemplate to use when testing connections to OneDrive.
+     * @return The JSON string read from OneDrive.
+     */
     public String testConnection(final OAuth2RestTemplate oAuth2RestTemplate) {
 
-        final String driveRoot = oAuth2RestTemplate.getForObject(oneDriveConfig.getBaseUri().resolve("root"),
-                String.class);
+        final String driveRoot =
+                oAuth2RestTemplate.getForObject(oneDriveConfig.getBaseUri().resolve("root"), String.class);
 
-        final OAuth2AccessToken accessToken = oAuth2RestTemplate.getAccessToken();
-        this.oAuth2RestTemplate = new OAuth2RestTemplate(oAuth2RestTemplate.getResource(), new DefaultOAuth2ClientContext(accessToken));
+        final PersistableDefaultOAuth2AccessToken accessToken = new PersistableDefaultOAuth2AccessToken(oAuth2RestTemplate.getAccessToken());
+        accessToken.id = PERSISTED_TOKEN_ID;
+        final PersistableDefaultOAuth2AccessToken persistedAccessToken = accessTokenRepository.save(accessToken);
+
+        this.oAuth2RestTemplate = new OAuth2RestTemplate(oAuth2RestTemplate.getResource(),
+                new DefaultOAuth2ClientContext(persistedAccessToken));
 
         return driveRoot;
     }
@@ -59,7 +89,7 @@ public class OneDriveService {
      * Write the given file content into OneDrive at a path relative the folder specified in the OneDrive configuration.
      *
      * @param relativePath The path to the file to write to in OneDrive.
-     * @param content The content of the file.
+     * @param content      The content of the file.
      */
     public void writeFile(final String relativePath, byte[] content) {
         if (null == oAuth2RestTemplate) {

@@ -2,6 +2,7 @@ package com.foomoo.awf;
 
 import com.foomoo.awf.config.AppAdminConfig;
 import com.foomoo.awf.config.AppOneDriveConfig;
+import com.foomoo.awf.oauth2.AccessTokenRepository;
 import com.foomoo.awf.onedrive.OneDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -67,8 +68,10 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
 
     @Bean
     @Scope("singleton")
-    public OneDriveService oneDriveService(final AppOneDriveConfig oneDriveConfig) {
-        return new OneDriveService(oneDriveConfig);
+    public OneDriveService oneDriveService(final AppOneDriveConfig oneDriveConfig,
+                                           final AccessTokenRepository accessTokenRepository,
+                                           final OAuth2ProtectedResourceDetails details) {
+        return new OneDriveService(oneDriveConfig, accessTokenRepository, details);
     }
 
     /**
