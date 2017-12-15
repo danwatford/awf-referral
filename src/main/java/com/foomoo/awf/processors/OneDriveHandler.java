@@ -11,9 +11,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 @Service
 public class OneDriveHandler {
@@ -42,6 +47,20 @@ public class OneDriveHandler {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+        }
+
+        // Write any url files.
+
+        final List<URI> links = new ArrayList<>();
+        if (StringUtils.isNotBlank(referral.getMusicLink1().getPath())) {
+            final URI link = referral.getMusicLink1();
+            final String content = "[InternetShortcut]\nURL=" + link + "\n";
+            writeFileToFolder(folderName,  "link1.url", content.getBytes(StandardCharsets.UTF_8));
+        }
+        if (StringUtils.isNotBlank(referral.getMusicLink2().getPath())) {
+            final URI link = referral.getMusicLink2();
+            final String content = "[InternetShortcut]\nURL=" + link + "\n";
+            writeFileToFolder(folderName,  "link2.url", content.getBytes(StandardCharsets.UTF_8));
         }
     }
 
