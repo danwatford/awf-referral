@@ -10,10 +10,13 @@ import org.springframework.http.*;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
+import org.springframework.security.oauth2.common.AuthenticationScheme;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
 import java.util.Collections;
+import java.util.List;
 
 public class OneDriveService {
 
@@ -27,6 +30,7 @@ public class OneDriveService {
     /**
      * Construct the service based on the given configuration.
      * Loads the application's access token from the given {@link AccessTokenRepository}.
+     *
      * @param oneDriveConfig
      */
     public OneDriveService(AppOneDriveConfig oneDriveConfig, AccessTokenRepository accessTokenRepository,
@@ -34,8 +38,11 @@ public class OneDriveService {
         this.oneDriveConfig = oneDriveConfig;
         this.accessTokenRepository = accessTokenRepository;
 
+        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
+                new ClientOnlyAuthorisationCodeResourceDetails((AuthorizationCodeResourceDetails) details);
+
         final PersistableDefaultOAuth2AccessToken accessToken = accessTokenRepository.findOne(PERSISTED_TOKEN_ID);
-        this.oAuth2RestTemplate = new OAuth2RestTemplate(details, new DefaultOAuth2ClientContext(accessToken));
+        this.oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails, new DefaultOAuth2ClientContext(accessToken));
     }
 
     /**
@@ -58,7 +65,10 @@ public class OneDriveService {
         accessToken.id = PERSISTED_TOKEN_ID;
         final PersistableDefaultOAuth2AccessToken persistedAccessToken = accessTokenRepository.save(accessToken);
 
-        this.oAuth2RestTemplate = new OAuth2RestTemplate(oAuth2RestTemplate.getResource(),
+        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
+                new ClientOnlyAuthorisationCodeResourceDetails((AuthorizationCodeResourceDetails) oAuth2RestTemplate.getResource());
+
+        this.oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails,
                 new DefaultOAuth2ClientContext(persistedAccessToken));
 
         return driveRoot;
@@ -124,6 +134,79 @@ public class OneDriveService {
 
         public URI getUploadUrl() {
             return uploadUrl;
+        }
+    }
+
+    /**
+     * Wrap an {@link org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails} object to report it as being client only. This
+     * allows credentials to be cached and renewed without the user being present.
+     */
+    private static class ClientOnlyAuthorisationCodeResourceDetails extends AuthorizationCodeResourceDetails {
+
+        private final AuthorizationCodeResourceDetails delegate;
+
+        public ClientOnlyAuthorisationCodeResourceDetails(final AuthorizationCodeResourceDetails delegate) {
+            this.delegate = delegate;
+        }
+
+        @Override
+        public String getId() {
+            return delegate.getId();
+        }
+
+        @Override
+        public String getClientId() {
+            return delegate.getClientId();
+        }
+
+        @Override
+        public String getAccessTokenUri() {
+            return delegate.getAccessTokenUri();
+        }
+
+        @Override
+        public boolean isScoped() {
+            return delegate.isScoped();
+        }
+
+        @Override
+        public List<String> getScope() {
+            return delegate.getScope();
+        }
+
+        @Override
+        public boolean isAuthenticationRequired() {
+            return delegate.isAuthenticationRequired();
+        }
+
+        @Override
+        public String getClientSecret() {
+            return delegate.getClientSecret();
+        }
+
+        @Override
+        public AuthenticationScheme getClientAuthenticationScheme() {
+            return delegate.getClientAuthenticationScheme();
+        }
+
+        @Override
+        public String getGrantType() {
+            return delegate.getGrantType();
+        }
+
+        @Override
+        public AuthenticationScheme getAuthenticationScheme() {
+            return delegate.getAuthenticationScheme();
+        }
+
+        @Override
+        public String getTokenName() {
+            return delegate.getTokenName();
+        }
+
+        @Override
+        public boolean isClientOnly() {
+            return true;
         }
     }
 
