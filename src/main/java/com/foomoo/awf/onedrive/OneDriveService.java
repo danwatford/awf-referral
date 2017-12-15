@@ -5,16 +5,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foomoo.awf.config.AppOneDriveConfig;
 import com.foomoo.awf.oauth2.AccessTokenRepository;
-import com.foomoo.awf.oauth2.PersistableDefaultOAuth2AccessToken;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
+import org.springframework.security.oauth2.client.token.AccessTokenProviderChain;
+import org.springframework.security.oauth2.client.token.ClientTokenServices;
+import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
 import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
 import org.springframework.security.oauth2.common.AuthenticationScheme;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.client.HttpClientErrorException;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -25,7 +29,7 @@ public class OneDriveService {
 
     private final AppOneDriveConfig oneDriveConfig;
 
-    private final AccessTokenRepository accessTokenRepository;
+    private final SingleTokenClientTokenServices clientTokenServices;
 
     /**
      * Construct the service based on the given configuration.
@@ -36,13 +40,10 @@ public class OneDriveService {
     public OneDriveService(AppOneDriveConfig oneDriveConfig, AccessTokenRepository accessTokenRepository,
                            final OAuth2ProtectedResourceDetails details) {
         this.oneDriveConfig = oneDriveConfig;
-        this.accessTokenRepository = accessTokenRepository;
 
-        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
-                new ClientOnlyAuthorisationCodeResourceDetails((AuthorizationCodeResourceDetails) details);
+        this.clientTokenServices = new SingleTokenClientTokenServices(PERSISTED_TOKEN_ID, accessTokenRepository);
 
-        final PersistableDefaultOAuth2AccessToken accessToken = accessTokenRepository.findOne(PERSISTED_TOKEN_ID);
-        this.oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails, new DefaultOAuth2ClientContext(accessToken));
+        this.oAuth2RestTemplate = createRestTemplate(clientTokenServices, (AuthorizationCodeResourceDetails) details);
     }
 
     /**
@@ -61,15 +62,8 @@ public class OneDriveService {
         final String driveRoot =
                 oAuth2RestTemplate.getForObject(oneDriveConfig.getBaseUri().resolve("root"), String.class);
 
-        final PersistableDefaultOAuth2AccessToken accessToken = new PersistableDefaultOAuth2AccessToken(oAuth2RestTemplate.getAccessToken());
-        accessToken.id = PERSISTED_TOKEN_ID;
-        final PersistableDefaultOAuth2AccessToken persistedAccessToken = accessTokenRepository.save(accessToken);
-
-        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
-                new ClientOnlyAuthorisationCodeResourceDetails((AuthorizationCodeResourceDetails) oAuth2RestTemplate.getResource());
-
-        this.oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails,
-                new DefaultOAuth2ClientContext(persistedAccessToken));
+        clientTokenServices.saveAccessToken(null, null, oAuth2RestTemplate.getAccessToken());
+        this.oAuth2RestTemplate = createRestTemplate(clientTokenServices, (AuthorizationCodeResourceDetails) oAuth2RestTemplate.getResource());
 
         return driveRoot;
     }
@@ -121,6 +115,27 @@ public class OneDriveService {
         final HttpEntity<byte[]> httpRequest = new HttpEntity<byte[]>(content, headers);
 
         oAuth2RestTemplate.exchange(uploadUrl, HttpMethod.PUT, httpRequest, String.class);
+    }
+
+    private OAuth2RestTemplate createRestTemplate(final ClientTokenServices clientTokenServices,
+                                                  final AuthorizationCodeResourceDetails authorizationCodeResourceDetails) {
+
+        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
+                new ClientOnlyAuthorisationCodeResourceDetails(authorizationCodeResourceDetails);
+
+        final OAuth2AccessToken accessToken = clientTokenServices.getAccessToken(null, null);
+        if (accessToken == null) {
+            // No access token, don't create the template.
+            return null;
+        }
+
+        final OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails, new DefaultOAuth2ClientContext(accessToken));
+
+        final AccessTokenProviderChain provider = new AccessTokenProviderChain(Arrays.asList(new AuthorizationCodeAccessTokenProvider()));
+        provider.setClientTokenServices(clientTokenServices);
+
+        oAuth2RestTemplate.setAccessTokenProvider(provider);
+        return oAuth2RestTemplate;
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
