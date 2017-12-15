@@ -1,10 +1,6 @@
 package com.foomoo.awf.controllers;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.foomoo.awf.pojo.ApplicableCircumstance;
-import com.foomoo.awf.pojo.Gender;
-import com.foomoo.awf.pojo.Referral;
-import com.foomoo.awf.pojo.ReferralPopulator;
+import com.foomoo.awf.pojo.*;
 import com.foomoo.awf.processors.ReferralSubmitter;
 import com.foomoo.awf.validators.ReferralValidator;
 import org.springframework.stereotype.Controller;
@@ -20,6 +16,7 @@ import javax.validation.Valid;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -30,7 +27,7 @@ public class MainController {
     /**
      * Name of the {@link Referral} object as stored in the user's HTTP session.
      */
-    private static final String SESSION_REFERRAL_NAME = "AWFREFERRAL";
+    private static final String REFERRAL_ID_SESSION_ATTRIBUTE = "AWFREFERRAL_ID";
 
     /**
      * Length of time that sessions shall persist for.
@@ -39,8 +36,11 @@ public class MainController {
 
     private final ReferralSubmitter referralSubmitter;
 
-    public MainController(final ReferralSubmitter referralSubmitter) {
+    private final ReferralRepository referralRepository;
+
+    public MainController(final ReferralSubmitter referralSubmitter, final ReferralRepository referralRepository) {
         this.referralSubmitter = referralSubmitter;
+        this.referralRepository = referralRepository;
     }
 
     @ModelAttribute("allApplicableCircumstances")
@@ -112,7 +112,6 @@ public class MainController {
     public String checkReferral(@Valid final Referral referral,
                                 @RequestParam("file1") final MultipartFile file1,
                                 @RequestParam("file2") final MultipartFile file2,
-                                @RequestParam("file3") final MultipartFile file3,
                                 final BindingResult bindingResult,
                                 final HttpSession session) {
 
@@ -122,7 +121,7 @@ public class MainController {
             return "form";
         } else {
 
-            final List<MultipartFile> multipartFiles = Stream.of(file1, file2, file3)
+            final List<MultipartFile> multipartFiles = Stream.of(file1, file2)
                     .filter(f -> !f.isEmpty()).collect(Collectors.toList());
             referralSubmitter.submit(referral, multipartFiles);
 
@@ -163,27 +162,42 @@ public class MainController {
      * @return The retrieved or created Referral.
      */
     private Referral getOrCreateReferralForSession(final HttpSession session) {
-        final Object attribute = session.getAttribute(SESSION_REFERRAL_NAME);
-        final Referral referral;
+        final Object attribute = session.getAttribute(REFERRAL_ID_SESSION_ATTRIBUTE);
+        Referral referral;
         if (attribute == null) {
+            // Since there is no information about any Referrals in the session, just create a blank
+            // referral and don't worry about persisting it at this stage.
             referral = new Referral();
-            setReferralOnSession(session, referral);
         } else {
-            referral = new ObjectMapper().convertValue(attribute, Referral.class);
+            referral = referralRepository.findOne((UUID) attribute);
+            if (referral == null) {
+                referral = new Referral();
+            }
         }
 
         return referral;
     }
 
     /**
-     * Set the given {@link Referral} on the given {@link HttpSession}. This persists the referral as part of the
-     * session allowing it to be retrieved later.
+     * Persists the given Referral, reusing the referral id from the session.
+     * If no referral id exists, create a new id and store on the session.
      *
      * @param session  The user's HttpSession.
      * @param referral The Referral to persist as part of the session.
      */
     private void setReferralOnSession(final HttpSession session, final Referral referral) {
-        session.setAttribute(SESSION_REFERRAL_NAME, referral);
+
+        final Object attribute = session.getAttribute(REFERRAL_ID_SESSION_ATTRIBUTE);
+        final UUID referralId;
+        if (attribute == null) {
+            referralId = UUID.randomUUID();
+            session.setAttribute(REFERRAL_ID_SESSION_ATTRIBUTE, referralId);
+        } else {
+            referralId = (UUID) attribute;
+        }
+
+        referral.setId(referralId);
+        referralRepository.save(referral);
     }
 
 }
