@@ -2,6 +2,7 @@ package com.foomoo.awf.pojo;
 
 import com.google.common.collect.ImmutableSet;
 
+import java.net.URI;
 import java.time.LocalDate;
 
 /**
@@ -66,5 +67,6 @@ public class ReferralPopulator {
 
         referral.setWhyReady("Why Ready");
 
+        referral.setMusicLink1(URI.create("https://www.youtube.com/watch?v=r-zYD-aVEXQ"));
     }
 }

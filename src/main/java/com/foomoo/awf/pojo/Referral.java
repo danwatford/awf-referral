@@ -8,22 +8,27 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import com.foomoo.awf.render.LocalDateAdapter;
 import com.foomoo.awf.render.ZonedDateTimeAdapter;
 import org.hibernate.validator.constraints.Email;
+import org.springframework.data.annotation.Id;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
+import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.Set;
+import java.util.UUID;
 
 /**
  * Object holding the data related to a referral submission.
  */
 @XmlRootElement
 public class Referral implements Serializable {
+
+    @Id
+    private UUID id;
 
     @NotNull(message = "Please enter the applicant''s name.")
     private String applicantName;
@@ -79,17 +84,13 @@ public class Referral implements Serializable {
 
     private String whyReady;
 
+    private URI musicLink1;
+    private URI musicLink2;
+
     @JsonIgnore
     private ZonedDateTime submissionDateTime;
 
-    /**
-     * To support testing, pre-populate this referral with dummy data.
-     */
-    @PostConstruct
-    public void prepopulate() {
 
-        ReferralPopulator.populateReferral(this);
-    }
 
     public String getApplicantName() {
         return applicantName;
@@ -348,6 +349,22 @@ public class Referral implements Serializable {
         this.whyReady = whyReady;
     }
 
+    public URI getMusicLink1() {
+        return musicLink1;
+    }
+
+    public void setMusicLink1(URI musicLink1) {
+        this.musicLink1 = musicLink1;
+    }
+
+    public URI getMusicLink2() {
+        return musicLink2;
+    }
+
+    public void setMusicLink2(URI musicLink2) {
+        this.musicLink2 = musicLink2;
+    }
+
     @XmlJavaTypeAdapter(value = ZonedDateTimeAdapter.class)
     public ZonedDateTime getSubmissionDateTime() {
         return submissionDateTime;
@@ -355,5 +372,13 @@ public class Referral implements Serializable {
 
     public void setSubmissionDateTime(final ZonedDateTime submissionDateTime) {
         this.submissionDateTime = submissionDateTime;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 }

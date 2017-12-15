@@ -270,11 +270,137 @@
         </fieldset>
 
         <fieldset>
-            <legend>Please select up to 3 audio files you wish to upload as part of this referral.</legend>
-            <input type="file" accept="audio/*" name="file1"/>
-            <input type="file" accept="audio/*" name="file2"/>
-            <input type="file" accept="audio/*" name="file3"/>
+            <legend>Emergency Contact Details</legend>
 
+            <div class="form-group">
+                <label th:for="${#ids.next('emergencyContactName')}" class="col-md-4 control-label">Name</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('emergencyContactName')}? has-error">
+                    <input type="text" th:field="*{emergencyContactName}"
+                           class="form-control input-md" placeholder="Name"/>
+                    <div th:if="${#fields.hasErrors('emergencyContactName')}" th:errors="*{emergencyContactName}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('emergencyContactTelephone')}" class="col-md-4 control-label">Contact Number</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('emergencyContactTelephone')}? has-error">
+                    <input type="text" th:field="*{emergencyContactTelephone}"
+                           class="form-control input-md" placeholder="Telephone"/>
+                    <div th:if="${#fields.hasErrors('emergencyContactTelephone')}" th:errors="*{emergencyContactTelephone}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('emergencyContactMobile')}" class="col-md-4 control-label">Mobile Number</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('emergencyContactMobile')}? has-error">
+                    <input type="text" th:field="*{emergencyContactMobile}"
+                           class="form-control input-md" placeholder="Mobile"/>
+                    <div th:if="${#fields.hasErrors('emergencyContactMobile')}" th:errors="*{emergencyContactMobile}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('emergencyContactEmail')}" class="col-md-4 control-label">Email</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('emergencyContactEmail')}? has-error">
+                    <input type="text" th:field="*{emergencyContactEmail}"
+                           class="form-control input-md" placeholder="Email"/>
+                    <div th:if="${#fields.hasErrors('emergencyContactEmail')}" th:errors="*{emergencyContactEmail}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('emergencyContactRelationship')}" class="col-md-4 control-label">Relationship</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('emergencyContactRelationship')}? has-error">
+                    <input type="text" th:field="*{emergencyContactRelationship}"
+                           class="form-control input-md" placeholder="Relationship"/>
+                    <div th:if="${#fields.hasErrors('emergencyContactRelationship')}" th:errors="*{emergencyContactRelationship}" class="help-block"></div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please tell us about their musical experience/talent to date</legend>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('experienceInstruments')}" class="col-md-4 control-label">Instruments</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('experienceInstruments')}? has-error">
+                    <textarea class="form-control input-md"
+                              rows="5" th:field="*{experienceInstruments}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('experienceInstruments')}" th:errors="*{experienceInstruments}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('experienceStudio')}" class="col-md-4 control-label">Studio / Production</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('experienceStudio')}? has-error">
+                    <textarea class="form-control input-md"
+                              rows="5" th:field="*{experienceStudio}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('experienceStudio')}" th:errors="*{experienceStudio}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('experienceSongwriting')}" class="col-md-4 control-label">Songwriting</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('experienceSongwriting')}? has-error">
+                    <textarea class="form-control input-md"
+                              rows="5" th:field="*{experienceSongwriting}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('experienceSongwriting')}" th:errors="*{experienceSongwriting}" class="help-block"></div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label th:for="${#ids.next('experienceLivePerformance')}" class="col-md-4 control-label">Live Performance</label>
+                <div class="col-md-6" th:classappend="${#fields.hasErrors('experienceLivePerformance')}? has-error">
+                    <textarea class="form-control input-md"
+                              rows="5" th:field="*{experienceLivePerformance}">
+                    </textarea>
+                    <div th:if="${#fields.hasErrors('experienceLivePerformance')}" th:errors="*{experienceLivePerformance}" class="help-block"></div>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please tell us why you feel they are ready for this opportunity</legend>
+
+            <div class="form-group">
+                <div class="col-md-6 col-md-offset-2">
+                    <textarea class="form-control input-md"
+                              rows="5" th:field="*{whyReady}">
+                    </textarea>
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>We need two examples of the applicants music to date, so please submit
+                audio files with this form or provide links to Soundcloud or Youtube below:</legend>
+            <div class="form-group">
+                <label for="file1" class="col-md-4 control-label">Audio File</label>
+                <div class="col-md-6">
+                    <input type="file" accept="audio/*" id="file1" name="file1"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="file2" class="col-md-4 control-label">Audio File</label>
+                <div class="col-md-6">
+                    <input type="file" accept="audio/*" id="file2" name="file2"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label th:for="${#ids.next('musicLink1')}" class="col-md-4 control-label">Link</label>
+                <div class="col-md-6">
+                    <input type="url" class="form-control input-md" th:field="*{musicLink1}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label th:for="${#ids.next('musicLink2')}" class="col-md-4 control-label">Link</label>
+                <div class="col-md-6">
+                    <input type="url" class="form-control input-md" th:field="*{musicLink2}"/>
+                </div>
+            </div>
         </fieldset>
 
         <blockquote>

@@ -213,7 +213,7 @@
                     </fo:block>
 
                     <fo:block font-weight="bold" space-before="8pt">
-                        Are they accessing any other professional support?
+                        Are they accessing any other professional support? If so please provide details:
                     </fo:block>
                     <fo:block linefeed-treatment="preserve">
                         <xsl:value-of select="otherProfessionalSupport"/>
