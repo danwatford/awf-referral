@@ -3,9 +3,11 @@ package com.foomoo.awf.processors;
 import com.foomoo.awf.pojo.Referral;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.Collection;
 
 /**
  * Class to allow submission of referrals to the application.
@@ -22,12 +24,12 @@ public class ReferralSubmitter {
         this.confirmationHandler = confirmationHandler;
     }
 
-    public String submit(final Referral referral) {
+    public String submit(final Referral referral, final Collection<MultipartFile> multipartFiles) {
 
         final ZoneId zoneId = ZoneId.of("Europe/London");
         referral.setSubmissionDateTime(ZonedDateTime.now(zoneId));
 
-        oneDriveHandler.handleSubmission(referral);
+        oneDriveHandler.handleSubmission(referral, multipartFiles);
 
         confirmationHandler.sendConfirmation(referral.getReferrerEmail());
 

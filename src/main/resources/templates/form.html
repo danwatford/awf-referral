@@ -25,7 +25,8 @@
 
 <body>
 <div class="container">
-    <form class="form-horizontal" action="#" th:action="@{/}" th:object="${referral}" method="post">
+    <form class="form-horizontal" action="#" th:action="@{/}" th:object="${referral}"
+          method="post" enctype="multipart/form-data">
 
         <button type="submit" name="action" value="submit">Submit Referral</button>
         <button type="submit" name="action" value="save">Save for Later</button>
@@ -266,6 +267,14 @@
                     </textarea>
                 </div>
             </div>
+        </fieldset>
+
+        <fieldset>
+            <legend>Please select up to 3 audio files you wish to upload as part of this referral.</legend>
+            <input type="file" accept="audio/*" name="file1"/>
+            <input type="file" accept="audio/*" name="file2"/>
+            <input type="file" accept="audio/*" name="file3"/>
+
         </fieldset>
 
         <blockquote>

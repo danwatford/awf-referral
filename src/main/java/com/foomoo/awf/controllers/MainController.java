@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,8 @@ import javax.validation.Valid;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Controller
 @RequestMapping("/")
@@ -106,7 +109,11 @@ public class MainController {
      * @return View indicating submission completion or failure.
      */
     @PostMapping(params = "action=submit")
-    public String checkReferral(@Valid final Referral referral, final BindingResult bindingResult,
+    public String checkReferral(@Valid final Referral referral,
+                                @RequestParam("file1") final MultipartFile file1,
+                                @RequestParam("file2") final MultipartFile file2,
+                                @RequestParam("file3") final MultipartFile file3,
+                                final BindingResult bindingResult,
                                 final HttpSession session) {
 
         setReferralOnSession(session, referral);
@@ -114,7 +121,10 @@ public class MainController {
         if (bindingResult.hasErrors()) {
             return "form";
         } else {
-            referralSubmitter.submit(referral);
+
+            final List<MultipartFile> multipartFiles = Stream.of(file1, file2, file3)
+                    .filter(f -> !f.isEmpty()).collect(Collectors.toList());
+            referralSubmitter.submit(referral, multipartFiles);
 
             // Clear the referral from the session.
             setReferralOnSession(session, new Referral());
