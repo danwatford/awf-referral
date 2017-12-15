@@ -15,16 +15,19 @@ import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
 
 @Service
 public class OneDriveHandler {
     @Autowired
     OneDriveService oneDriveService;
 
+    /**
+     * Publish the {@link Referral} submission to OneDrive.
+     *
+     * @param referral       The {@link Referral} to publish.
+     * @param multipartFiles Any audio files that should be published alongside the main Referral content.
+     */
     public void handleSubmission(final Referral referral, final Collection<MultipartFile> multipartFiles) {
 
         final XmlReferralRenderer xmlReferralRenderer = new XmlReferralRenderer();
@@ -49,30 +52,52 @@ public class OneDriveHandler {
             }
         }
 
-        // Write any url files.
-
-        final List<URI> links = new ArrayList<>();
-        if (StringUtils.isNotBlank(referral.getMusicLink1().getPath())) {
-            final URI link = referral.getMusicLink1();
-            final String content = "[InternetShortcut]\nURL=" + link + "\n";
-            writeFileToFolder(folderName,  "link1.url", content.getBytes(StandardCharsets.UTF_8));
-        }
-        if (StringUtils.isNotBlank(referral.getMusicLink2().getPath())) {
-            final URI link = referral.getMusicLink2();
-            final String content = "[InternetShortcut]\nURL=" + link + "\n";
-            writeFileToFolder(folderName,  "link2.url", content.getBytes(StandardCharsets.UTF_8));
-        }
+        writeLinkToFolder(folderName, "Link1", referral.getMusicLink1());
+        writeLinkToFolder(folderName, "Link2", referral.getMusicLink2());
     }
 
+    /**
+     * Write file content to OneDrive. The file will be written to the given sub-folder relative to the root folder in
+     * use by the {@link OneDriveService} and will use the given file name.
+     * <p>
+     * The folder and file names will have any illegal characters stripped before use.
+     *
+     * @param folderName Folder to write the file to.
+     * @param fileName   The file name to write to.
+     * @param content    The content of the file.
+     */
     private void writeFileToFolder(final String folderName, final String fileName, final byte[] content) {
         oneDriveService.writeFile(stripFilename(folderName) + "/" + stripFilename(fileName), content);
     }
 
-    private String stripFilename(String filename) {
+    /**
+     * Write a link (.url file) to OneDrive based on the given base name and URI. The name of the link shall be
+     * constructed from the given base name and the host that the link refers to.
+     *
+     * @param folderName Folder to write the link to.
+     * @param baseName   Base name used to construct a name for the link.
+     * @param link       The target of the link. If the link is null or the target of the link is empty, i.e.
+     *                   StringUtils.isBlank(link.getPath()) is true, then no link is written.
+     */
+    private void writeLinkToFolder(final String folderName, final String baseName, final URI link) {
+        if (link != null && StringUtils.isNotBlank(link.getPath())) {
+            final String fileName = String.format("%s-%s.url", baseName, link.getHost());
+            final String content = "[InternetShortcut]\nURL=" + link + "\n";
+            writeFileToFolder(folderName, fileName, content.getBytes(StandardCharsets.US_ASCII));
+        }
+    }
+
+    /**
+     * Strip any illegal character sequences from folder and file names intended for use on OneDrive.
+     *
+     * @param name The name of the file or folder to strip illegal sequences from.
+     * @return The name with illegal character sequences removed.
+     */
+    private String stripFilename(String name) {
         final String[] invalidSequences = {"~", "\"", "#", "%", "&", "*", ":", "<", ">", "?", "/", "\\", "{", "|", "}"};
         for (String invalidSequence : invalidSequences) {
-            filename = StringUtils.remove(filename, invalidSequence);
+            name = StringUtils.remove(name, invalidSequence);
         }
-        return filename;
+        return name;
     }
 }
