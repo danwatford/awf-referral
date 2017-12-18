@@ -110,9 +110,9 @@ public class MainController {
      */
     @PostMapping(params = "action=submit")
     public String checkReferral(@Valid final Referral referral,
+                                final BindingResult bindingResult,
                                 @RequestParam("file1") final MultipartFile file1,
                                 @RequestParam("file2") final MultipartFile file2,
-                                final BindingResult bindingResult,
                                 final HttpSession session) {
 
         setReferralOnSession(session, referral);
