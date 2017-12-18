@@ -40,6 +40,8 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
                 .antMatchers("/admin/**").hasAuthority("ADMIN")
                 .antMatchers("/").permitAll();
 
+        http.csrf().disable();
+
         // Allow embedding these pages in
         http.headers().frameOptions().disable();
     }
