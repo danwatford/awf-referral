@@ -138,7 +138,7 @@ public class MainController {
      * @param session The client's HttpSession.
      * @return A redirect view to get the referral form view.
      */
-    @PostMapping(params = "action=test-data")
+    @GetMapping("test")
     public RedirectView populateTestData(final HttpSession session) {
         final Referral referral = new Referral();
         ReferralPopulator.populateReferral(referral);
