@@ -6,6 +6,8 @@ import com.foomoo.awf.render.PdfRenderer;
 import com.foomoo.awf.render.XmlReferralRenderer;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -22,6 +24,8 @@ public class OneDriveHandler {
     @Autowired
     OneDriveService oneDriveService;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * Publish the {@link Referral} submission to OneDrive.
      *
@@ -30,12 +34,16 @@ public class OneDriveHandler {
      */
     public void handleSubmission(final Referral referral, final Collection<MultipartFile> multipartFiles) {
 
+        logger.info("handleSubmission with {} file(s)", multipartFiles.size());
+
         final XmlReferralRenderer xmlReferralRenderer = new XmlReferralRenderer();
         final String referralXml = xmlReferralRenderer.render(referral);
+        logger.debug("ReferralXml: " + referralXml);
 
         final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         final PdfRenderer pdfRenderer = new PdfRenderer();
         pdfRenderer.render(referralXml, baos);
+        logger.info("PDF rendered for referral. PDF size: " + baos.size());
 
         final ZonedDateTime submissionDateTime = referral.getSubmissionDateTime();
         final String formattedSubmissionDateTime = submissionDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME);
@@ -43,6 +51,7 @@ public class OneDriveHandler {
         final String folderName = referral.getApplicantName() + " - " + formattedSubmissionDateTime;
         final String fileName = referral.getApplicantName() + ".pdf";
         writeFileToFolder(folderName, fileName, baos.toByteArray());
+        logger.info("File written to folder. File: {}. Folder: {}.", fileName, folderName);
 
         for (final MultipartFile mf : multipartFiles) {
             try {

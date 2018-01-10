@@ -35,3 +35,7 @@ app:
   onedrive:
     folder: amys-yard-2018
     baseUri: https://graph.microsoft.com/v1.0/me/drive/
+logging:
+  level:
+    com.foomoo.awf.controllers.MainController: DEBUG
+    com.foomoo.awf.processors.ReferralSubmitter: DEBUG

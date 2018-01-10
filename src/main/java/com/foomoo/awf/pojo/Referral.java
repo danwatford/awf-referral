@@ -381,4 +381,46 @@ public class Referral implements Serializable {
     public void setId(UUID id) {
         this.id = id;
     }
+
+    @Override
+    public String toString() {
+        return "Referral{" +
+                "id=" + id +
+                ", applicantName='" + applicantName + '\'' +
+                ", applicantDateOfBirth=" + applicantDateOfBirth +
+                ", applicantGender=" + applicantGender +
+                ", applicantAddress='" + applicantAddress + '\'' +
+                ", applicantTelephone='" + applicantTelephone + '\'' +
+                ", applicantEmail='" + applicantEmail + '\'' +
+                ", referrerName='" + referrerName + '\'' +
+                ", referrerJobTitle='" + referrerJobTitle + '\'' +
+                ", referrerOrganisation='" + referrerOrganisation + '\'' +
+                ", referrerAddress='" + referrerAddress + '\'' +
+                ", referrerTelephone='" + referrerTelephone + '\'' +
+                ", referrerEmail='" + referrerEmail + '\'' +
+                ", referrerEmailConfirmation='" + referrerEmailConfirmation + '\'' +
+                ", aboutApplicant='" + aboutApplicant + '\'' +
+                ", howLongWorking='" + howLongWorking + '\'' +
+                ", howReferred='" + howReferred + '\'' +
+                ", howSupportingApplicant='" + howSupportingApplicant + '\'' +
+                ", anyAdditionalNeeds='" + anyAdditionalNeeds + '\'' +
+                ", applicableCircumstances=" + applicableCircumstances +
+                ", circumstanceSpecificDetails='" + circumstanceSpecificDetails + '\'' +
+                ", otherProfessionalSupport='" + otherProfessionalSupport + '\'' +
+                ", prescribedMedication='" + prescribedMedication + '\'' +
+                ", emergencyContactName='" + emergencyContactName + '\'' +
+                ", emergencyContactTelephone='" + emergencyContactTelephone + '\'' +
+                ", emergencyContactMobile='" + emergencyContactMobile + '\'' +
+                ", emergencyContactEmail='" + emergencyContactEmail + '\'' +
+                ", emergencyContactRelationship='" + emergencyContactRelationship + '\'' +
+                ", experienceInstruments='" + experienceInstruments + '\'' +
+                ", experienceStudio='" + experienceStudio + '\'' +
+                ", experienceSongwriting='" + experienceSongwriting + '\'' +
+                ", experienceLivePerformance='" + experienceLivePerformance + '\'' +
+                ", whyReady='" + whyReady + '\'' +
+                ", musicLink1=" + musicLink1 +
+                ", musicLink2=" + musicLink2 +
+                ", submissionDateTime=" + submissionDateTime +
+                '}';
+    }
 }

@@ -1,6 +1,8 @@
 package com.foomoo.awf.processors;
 
 import com.foomoo.awf.config.MailConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,8 @@ public class ConfirmationHandler {
     private TemplateEngine templateEngine;
     private final JavaMailSender mailSender;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public ConfirmationHandler(final TemplateEngine templateEngine, final JavaMailSender mailSender) {
         this.templateEngine = templateEngine;
         this.mailSender = mailSender;
@@ -30,6 +34,8 @@ public class ConfirmationHandler {
      * @param confirmationAddress The email address to send confirmation to.
      */
     public void sendConfirmation(final String confirmationAddress) {
+
+        logger.info("Sending confirmation email to: " + confirmationAddress);
 
         final MimeMessage message = mailSender.createMimeMessage();
         final MimeMessageHelper messageHelper = new MimeMessageHelper(message);

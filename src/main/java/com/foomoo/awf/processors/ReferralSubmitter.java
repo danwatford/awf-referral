@@ -1,6 +1,8 @@
 package com.foomoo.awf.processors;
 
 import com.foomoo.awf.pojo.Referral;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +19,8 @@ public class ReferralSubmitter {
 
     private final ConfirmationHandler confirmationHandler;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     @Autowired
     OneDriveHandler oneDriveHandler;
 
@@ -28,6 +32,10 @@ public class ReferralSubmitter {
 
         final ZoneId zoneId = ZoneId.of("Europe/London");
         referral.setSubmissionDateTime(ZonedDateTime.now(zoneId));
+
+        logger.info("Submitting referral");
+        logger.info("Referral submitted by: " + referral.getReferrerOrganisation() + "/" + referral.getReferrerName() + "/" + referral.getReferrerEmail());
+        logger.debug("Referral Details: " + referral);
 
         oneDriveHandler.handleSubmission(referral, multipartFiles);
 

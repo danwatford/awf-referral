@@ -3,6 +3,8 @@ package com.foomoo.awf.controllers;
 import com.foomoo.awf.pojo.*;
 import com.foomoo.awf.processors.ReferralSubmitter;
 import com.foomoo.awf.validators.ReferralValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -38,6 +40,8 @@ public class MainController {
 
     private final ReferralRepository referralRepository;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     public MainController(final ReferralSubmitter referralSubmitter, final ReferralRepository referralRepository) {
         this.referralSubmitter = referralSubmitter;
         this.referralRepository = referralRepository;
@@ -64,6 +68,8 @@ public class MainController {
     @GetMapping
     public String getReferralFormView(final Model model, final HttpSession session) {
 
+        logger.info("getReferralFormView: SessionId: " + session.getId());
+
         session.setMaxInactiveInterval((int) SESSION_DURATION.getSeconds());
 
         final Referral referral = getOrCreateReferralForSession(session);
@@ -80,6 +86,7 @@ public class MainController {
      */
     @PostMapping(params = "action=clear")
     public RedirectView clearReferral(final HttpSession session) {
+        logger.info("clearReferral: SessionId: " + session.getId());
         setReferralOnSession(session, new Referral());
         return new RedirectView("");
     }
@@ -93,6 +100,9 @@ public class MainController {
      */
     @PostMapping(params = "action=save")
     public RedirectView saveReferral(final Referral referral, final HttpSession session) {
+        logger.info("saveReferral: SessionId: " + session.getId());
+        logger.debug("Referral details: " + referral);
+
         setReferralOnSession(session, referral);
         return new RedirectView("");
     }
@@ -114,6 +124,9 @@ public class MainController {
                                 @RequestParam("file1") final MultipartFile file1,
                                 @RequestParam("file2") final MultipartFile file2,
                                 final HttpSession session) {
+
+        logger.info("checkReferral: SessionId: " + session.getId());
+        logger.debug("Referral details: " + referral);
 
         setReferralOnSession(session, referral);
 
