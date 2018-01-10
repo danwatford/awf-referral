@@ -41,7 +41,7 @@ public class AdminController {
 
         final String driveDetails = oneDriveService.testConnection(oAuth2RestTemplate);
 
-        oneDriveService.ensureFolderExists();
+        oneDriveService.ensureAppRootFolderExists();
 
         model.addAttribute("driveDetails", driveDetails);
         return getAdmin(authentication, model);

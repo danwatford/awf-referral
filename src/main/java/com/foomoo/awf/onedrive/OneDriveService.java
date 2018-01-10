@@ -71,7 +71,7 @@ public class OneDriveService {
     /**
      * Creates the parent folder under which all files and folders will be created by this service.
      */
-    public void ensureFolderExists() {
+    public void ensureAppRootFolderExists() {
         final ObjectMapper mapper = new ObjectMapper();
         final String folderName = oneDriveConfig.getFolder();
         final FolderDriveItem folderDriveItem = new FolderDriveItem(folderName);
