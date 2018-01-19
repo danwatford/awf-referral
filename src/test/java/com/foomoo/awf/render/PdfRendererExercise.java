@@ -28,7 +28,7 @@ class PdfRendererExercise {
 
         final ZoneId zoneId = ZoneId.of("Europe/London");
         referral.setSubmissionDateTime(LocalDateTime.of(2017, 9, 11, 15, 33, 43)
-                                                    .atZone(zoneId));
+                .atZone(zoneId));
 
 
         final String xmlInput = new XmlReferralRenderer().render(referral);
@@ -37,5 +37,22 @@ class PdfRendererExercise {
 
         final OutputStream os = Files.newOutputStream(Paths.get("target/test.pdf"));
         pdfRenderer.render(xmlInput, os);
+    }
+
+    /**
+     * Exercises rendering of existing XML to PDF.
+     *
+     * @throws IOException If there is an error reading the input XML.
+     */
+    @Test
+    public void rendersXmToPdf() throws IOException {
+        final String xmlString = IOUtils.toString(Thread.currentThread()
+                .getContextClassLoader()
+                .getResourceAsStream("PdfRenderer-input.xml"), StandardCharsets.UTF_8);
+
+        final PdfRenderer pdfRenderer = new PdfRenderer();
+
+        final OutputStream os = Files.newOutputStream(Paths.get("target/test.pdf"));
+        pdfRenderer.render(xmlString, os);
     }
 }

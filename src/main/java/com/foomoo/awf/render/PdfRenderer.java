@@ -5,18 +5,17 @@ import org.apache.avalon.framework.configuration.Configuration;
 import org.apache.avalon.framework.configuration.ConfigurationException;
 import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
 import org.apache.fop.apps.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
-//import javax.enterprise.context.ApplicationScoped;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.sax.SAXResult;
+import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.StringReader;
+import java.io.*;
 import java.net.URI;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -37,6 +36,8 @@ public class PdfRenderer {
      */
     private static final String FOP_XSLT_FILE_NAME = "referral-transform.xml";
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+
     /**
      * FOP Factory for rendering to PDF.
      */
@@ -51,17 +52,22 @@ public class PdfRenderer {
     public void render(final String referralXmlString, final OutputStream outputStream) {
 
         try {
-            final Fop fop = getFactory().newFop(MimeConstants.MIME_PDF, outputStream);
-
             final TransformerFactory transformerFactory = TransformerFactory.newInstance();
-            final Transformer transformer = transformerFactory.newTransformer(new StreamSource(getFopTransformerInputStream()));
+            final Transformer toFoTransformer = transformerFactory.newTransformer(new StreamSource(getFopTransformerInputStream()));
 
-            final StreamSource streamSource = new StreamSource(new StringReader(referralXmlString));
+            logger.debug("Creating FO");
+            final StreamSource referralXmlSource = new StreamSource(new StringReader(referralXmlString));
+            final StringWriter foWriter = new StringWriter();
+            toFoTransformer.transform(referralXmlSource, new StreamResult(foWriter));
+            final String foXml = foWriter.toString();
+            logger.debug("FO: " + foXml);
 
+            logger.debug("Creating PDF");
+            final Transformer toPdfTransformer = transformerFactory.newTransformer();
+            final Fop fop = getFactory().newFop(MimeConstants.MIME_PDF, outputStream);
             final SAXResult saxResult = new SAXResult(fop.getDefaultHandler());
-
-            transformer.transform(streamSource, saxResult);
-
+            toPdfTransformer.transform(new StreamSource(new StringReader(foXml)), saxResult);
+            logger.debug("PDF Results: " + fop.getResults().toString());
         } catch (FOPException | TransformerException e) {
             throw new RuntimeException("Exception while rendering Referral to PDF.", e);
         }
@@ -79,7 +85,7 @@ public class PdfRenderer {
 
                 final Configuration cfg = cfgBuilder.build(fopConfigurationInputStream);
                 fopFactory = new FopFactoryBuilder(URI.create("/")).setConfiguration(cfg)
-                                                                   .build();
+                        .build();
             } catch (IOException e) {
                 throw new RuntimeException("IOException while processing Apache FOP configuration file: " + getFopConfigurationPath(), e);
             } catch (SAXException e) {
@@ -99,7 +105,7 @@ public class PdfRenderer {
      */
     private Path getFopConfigurationPath() {
         return CommonConfig.getConfigDirectory()
-                           .resolve(FOP_CONFIG_FILE_NAME);
+                .resolve(FOP_CONFIG_FILE_NAME);
     }
 
     /**
@@ -123,7 +129,7 @@ public class PdfRenderer {
      */
     private Path getFopTransformerPath() {
         return CommonConfig.getConfigDirectory()
-                           .resolve(FOP_XSLT_FILE_NAME);
+                .resolve(FOP_XSLT_FILE_NAME);
     }
 
     /**
