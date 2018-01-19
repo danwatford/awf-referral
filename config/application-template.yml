@@ -39,3 +39,4 @@ logging:
   level:
     com.foomoo.awf.controllers.MainController: DEBUG
     com.foomoo.awf.processors.ReferralSubmitter: DEBUG
+    com.foomoo.awf.render.PdfRenderer: DEBUG

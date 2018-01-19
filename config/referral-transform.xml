@@ -190,20 +190,22 @@
                     <fo:block font-weight="bold" space-before="8pt">
                         Applicable Circumstances
                     </fo:block>
-                    <fo:list-block>
-                        <xsl:for-each select="applicableCircumstances">
-                            <fo:list-item>
-                                <fo:list-item-label>
-                                    <fo:block/>
-                                </fo:list-item-label>
-                                <fo:list-item-body>
-                                    <fo:block>
-                                        <xsl:value-of select="node()"/>
-                                    </fo:block>
-                                </fo:list-item-body>
-                            </fo:list-item>
-                        </xsl:for-each>
-                    </fo:list-block>
+                    <xsl:if test="applicableCircumstances">
+                        <fo:list-block>
+                            <xsl:for-each select="applicableCircumstances">
+                                <fo:list-item>
+                                    <fo:list-item-label>
+                                        <fo:block/>
+                                    </fo:list-item-label>
+                                    <fo:list-item-body>
+                                        <fo:block>
+                                            <xsl:value-of select="node()"/>
+                                        </fo:block>
+                                    </fo:list-item-body>
+                                </fo:list-item>
+                            </xsl:for-each>
+                        </fo:list-block>
+                    </xsl:if>
 
                     <fo:block font-weight="bold" space-before="8pt">
                         Please provide specific details so we are able to support individual needs:
