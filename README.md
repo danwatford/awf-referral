@@ -76,18 +76,18 @@ app:
 
 To build and run the solution execute:
 ```
-mvn spring-boot:run
+./gradlew bootRun
 ```
 
 Alternatively run or debug class `com.foomoo.awf.Application` from your IDE. Before using this method run 
-using maven first to ensure all required dependencies are downloaded to the local 
-maven repository.
+using gradle first to ensure all required dependencies are downloaded to the local 
+gradle cache.
 
 ### Building with Docker
 To build this project as a docker container run:
-```mvn -P docker package```
+```./gradlew docker```
 
-This will create a docker image at repository danwatford/awf-referral:_version_. These details can be changed in pom.xml.
+This will create a docker image at repository danwatford/awf-referral:_version_. These details can be changed in build.gradle.
 
 ### Running with Docker
 Docker images are published to <https://hub.docker.com/r/danwatford/awf-referral>.
