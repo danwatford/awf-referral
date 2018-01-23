@@ -14,8 +14,11 @@ as a Spring Boot application which provides a form for users to enter details of
 referred to the Amy's Yard programme. Information entered on the form is validated to ensure
 any mandatory items are provided and any constraints, such as minimum applicant age, are met.
 
-Once the form is validated and submitted, its contents are forwarded to the Amy Winehouse Foundation
-by email, and an email confirmation of the submission is sent to the user.
+Once the form is validated and submitted, its contents are forwarded to the Amy Winehouse Foundation's
+configured OneDrive account, and an email confirmation of the submission is sent to the user.
+
+The form also allows submission of audio files and links to showcase the candidate's
+musical experience. These files and links are placed alongside the form content in OneDrive.
 
 Awf-referral maintains long-running HTTP sessions which are used to store any form data entered
 prior to submission. This allows a user to partially complete the form and save it for later
@@ -29,6 +32,14 @@ docker images provide reverse proxying and certificate support.
 
 A docker-compose configuration is provided to define containers for the awf-referral webapp
 and the supporting components (MongoDB and Nginx).
+
+## Registering the application with Microsoft
+Since this webapp writes to a user's OneDrive account, it needs to authenticate the user with
+Microsoft and be granted write permission to their account. This means the webapp needs to be 
+registered with Microsoft and be granted a client ID and client secret.
+
+Visit https://apps.dev.microsoft.com to register your instance of the application. The ID and secret
+will need to be added to your application.yml configuration file.
 
 ## Sample Docker-Commpose Configuration
 
@@ -132,6 +143,6 @@ set:
 - Find the location of the awf-referral-config-vol volume on the docker host: 
 ```docker volume inspect <docker-compose-project-name>_awf-referral-config-vol```
 - At the awf-referral-config-vol volume location, copy file application-template.yml to application.yml. (You will probably need to 
-be root to do this.) Edit application.yml with your mail server details.
+be root to do this.) Edit application.yml with your mail server, web application and Office 365 domain details.
 - Start the docker-compose project again: ```docker-compose start```
 - Monitor the container: ```docker-compose logs -f```
