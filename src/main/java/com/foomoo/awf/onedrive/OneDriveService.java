@@ -2,48 +2,40 @@ package com.foomoo.awf.onedrive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.foomoo.awf.config.AppOneDriveConfig;
 import com.foomoo.awf.oauth2.AccessTokenRepository;
+import com.foomoo.awf.oauth2.OAuth2RestTemplateFactory;
 import org.springframework.http.*;
-import org.springframework.security.oauth2.client.DefaultOAuth2ClientContext;
 import org.springframework.security.oauth2.client.OAuth2RestTemplate;
-import org.springframework.security.oauth2.client.resource.OAuth2ProtectedResourceDetails;
-import org.springframework.security.oauth2.client.token.AccessTokenProviderChain;
-import org.springframework.security.oauth2.client.token.ClientTokenServices;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeAccessTokenProvider;
-import org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails;
-import org.springframework.security.oauth2.common.AuthenticationScheme;
-import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
-import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class OneDriveService {
 
-    private static final int PERSISTED_TOKEN_ID = 1;
-    private volatile OAuth2RestTemplate oAuth2RestTemplate;
+    private volatile RestTemplate restTemplate;
+
+    private final OAuth2RestTemplateFactory oAuth2RestTemplateFactory;
 
     private final AppOneDriveConfig oneDriveConfig;
-
-    private final SingleTokenClientTokenServices clientTokenServices;
 
     /**
      * Construct the service based on the given configuration.
      * Loads the application's access token from the given {@link AccessTokenRepository}.
      *
-     * @param oneDriveConfig
+     * @param oneDriveConfig            The configuration for interacting with OneDrive.
+     * @param restTemplate              The initial RestTemplate to use for communicating the OneDrive.
+     * @param oAuth2RestTemplateFactory The RestTemplate factory to use to create a replacement RestTemplate based
+     *                                  on an existing OAuth2RestTemplate with a valid access token.
      */
-    public OneDriveService(AppOneDriveConfig oneDriveConfig, AccessTokenRepository accessTokenRepository,
-                           final OAuth2ProtectedResourceDetails details) {
+    public OneDriveService(final AppOneDriveConfig oneDriveConfig,
+                           final RestTemplate restTemplate,
+                           final OAuth2RestTemplateFactory oAuth2RestTemplateFactory) {
         this.oneDriveConfig = oneDriveConfig;
-
-        this.clientTokenServices = new SingleTokenClientTokenServices(PERSISTED_TOKEN_ID, accessTokenRepository);
-
-        this.oAuth2RestTemplate = createRestTemplate(clientTokenServices, (AuthorizationCodeResourceDetails) details);
+        this.oAuth2RestTemplateFactory = oAuth2RestTemplateFactory;
+        this.restTemplate = restTemplate;
     }
 
     /**
@@ -62,8 +54,7 @@ public class OneDriveService {
         final String driveRoot =
                 oAuth2RestTemplate.getForObject(oneDriveConfig.getBaseUri().resolve("root"), String.class);
 
-        clientTokenServices.saveAccessToken(null, null, oAuth2RestTemplate.getAccessToken());
-        this.oAuth2RestTemplate = createRestTemplate(clientTokenServices, (AuthorizationCodeResourceDetails) oAuth2RestTemplate.getResource());
+        this.restTemplate = oAuth2RestTemplateFactory.createOAuth2RestTemplateFromTemplate(oAuth2RestTemplate);
 
         return driveRoot;
     }
@@ -72,14 +63,13 @@ public class OneDriveService {
      * Creates the parent folder under which all files and folders will be created by this service.
      */
     public void ensureAppRootFolderExists() {
-        final ObjectMapper mapper = new ObjectMapper();
         final String folderName = oneDriveConfig.getFolder();
         final FolderDriveItem folderDriveItem = new FolderDriveItem(folderName);
 
         final URI driveRootChildrenUri = oneDriveConfig.getBaseUri().resolve("root/children");
 
         try {
-            final ResponseEntity<FolderDriveItem> response = oAuth2RestTemplate.postForEntity(driveRootChildrenUri, folderDriveItem, FolderDriveItem.class);
+            final ResponseEntity<FolderDriveItem> response = restTemplate.postForEntity(driveRootChildrenUri, folderDriveItem, FolderDriveItem.class);
         } catch (HttpClientErrorException clientError) {
             if (HttpStatus.CONFLICT == clientError.getStatusCode()) {
                 System.out.println("Folder already exists. Looking up DriveItem.");
@@ -96,7 +86,7 @@ public class OneDriveService {
      * @param content      The content of the file.
      */
     public void writeFile(final String relativePath, byte[] content) {
-        if (null == oAuth2RestTemplate) {
+        if (null == restTemplate) {
             throw new IllegalStateException("No access configured for OneDrive");
         }
 
@@ -105,37 +95,16 @@ public class OneDriveService {
         final String encodedUriString = uriString.replaceAll(" ", "%20");
         final URI createUploadSessionUri = URI.create(encodedUriString);
 
-        final ResponseEntity<UploadSession> uploadSessionResponse = oAuth2RestTemplate.postForEntity(createUploadSessionUri, Collections.emptyMap(), UploadSession.class);
+        final ResponseEntity<UploadSession> uploadSessionResponse = restTemplate.postForEntity(createUploadSessionUri, Collections.emptyMap(), UploadSession.class);
 
         final URI uploadUrl = uploadSessionResponse.getBody().getUploadUrl();
 
         final HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Range", "bytes 0-" + (content.length - 1) + "/" + content.length);
 
-        final HttpEntity<byte[]> httpRequest = new HttpEntity<byte[]>(content, headers);
+        final HttpEntity<byte[]> httpRequest = new HttpEntity<>(content, headers);
 
-        oAuth2RestTemplate.exchange(uploadUrl, HttpMethod.PUT, httpRequest, String.class);
-    }
-
-    private OAuth2RestTemplate createRestTemplate(final ClientTokenServices clientTokenServices,
-                                                  final AuthorizationCodeResourceDetails authorizationCodeResourceDetails) {
-
-        final ClientOnlyAuthorisationCodeResourceDetails wrappedDetails =
-                new ClientOnlyAuthorisationCodeResourceDetails(authorizationCodeResourceDetails);
-
-        final OAuth2AccessToken accessToken = clientTokenServices.getAccessToken(null, null);
-        if (accessToken == null) {
-            // No access token, don't create the template.
-            return null;
-        }
-
-        final OAuth2RestTemplate oAuth2RestTemplate = new OAuth2RestTemplate(wrappedDetails, new DefaultOAuth2ClientContext(accessToken));
-
-        final AccessTokenProviderChain provider = new AccessTokenProviderChain(Arrays.asList(new AuthorizationCodeAccessTokenProvider()));
-        provider.setClientTokenServices(clientTokenServices);
-
-        oAuth2RestTemplate.setAccessTokenProvider(provider);
-        return oAuth2RestTemplate;
+        restTemplate.exchange(uploadUrl, HttpMethod.PUT, httpRequest, String.class);
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
@@ -151,78 +120,4 @@ public class OneDriveService {
             return uploadUrl;
         }
     }
-
-    /**
-     * Wrap an {@link org.springframework.security.oauth2.client.token.grant.code.AuthorizationCodeResourceDetails} object to report it as being client only. This
-     * allows credentials to be cached and renewed without the user being present.
-     */
-    private static class ClientOnlyAuthorisationCodeResourceDetails extends AuthorizationCodeResourceDetails {
-
-        private final AuthorizationCodeResourceDetails delegate;
-
-        public ClientOnlyAuthorisationCodeResourceDetails(final AuthorizationCodeResourceDetails delegate) {
-            this.delegate = delegate;
-        }
-
-        @Override
-        public String getId() {
-            return delegate.getId();
-        }
-
-        @Override
-        public String getClientId() {
-            return delegate.getClientId();
-        }
-
-        @Override
-        public String getAccessTokenUri() {
-            return delegate.getAccessTokenUri();
-        }
-
-        @Override
-        public boolean isScoped() {
-            return delegate.isScoped();
-        }
-
-        @Override
-        public List<String> getScope() {
-            return delegate.getScope();
-        }
-
-        @Override
-        public boolean isAuthenticationRequired() {
-            return delegate.isAuthenticationRequired();
-        }
-
-        @Override
-        public String getClientSecret() {
-            return delegate.getClientSecret();
-        }
-
-        @Override
-        public AuthenticationScheme getClientAuthenticationScheme() {
-            return delegate.getClientAuthenticationScheme();
-        }
-
-        @Override
-        public String getGrantType() {
-            return delegate.getGrantType();
-        }
-
-        @Override
-        public AuthenticationScheme getAuthenticationScheme() {
-            return delegate.getAuthenticationScheme();
-        }
-
-        @Override
-        public String getTokenName() {
-            return delegate.getTokenName();
-        }
-
-        @Override
-        public boolean isClientOnly() {
-            return true;
-        }
-    }
-
 }

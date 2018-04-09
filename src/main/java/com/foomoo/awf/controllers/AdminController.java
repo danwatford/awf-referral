@@ -20,11 +20,15 @@ import java.util.Map;
 @RequestMapping("admin")
 public class AdminController {
 
-    @Autowired
-    OAuth2RestTemplate oAuth2RestTemplate;
+    private final OAuth2RestTemplate oneDriveAdminOAuth2RestTemplate;
+    private final OneDriveService oneDriveService;
 
     @Autowired
-    OneDriveService oneDriveService;
+    public AdminController(final OAuth2RestTemplate oneDriveAdminOAuth2RestTemplate,
+                           final OneDriveService oneDriveService) {
+        this.oneDriveAdminOAuth2RestTemplate = oneDriveAdminOAuth2RestTemplate;
+        this.oneDriveService = oneDriveService;
+    }
 
     @GetMapping
     public String getAdmin(final Authentication authentication, final Model model) {
@@ -39,7 +43,7 @@ public class AdminController {
     @RequestMapping("/accept")
     public String accept(final Authentication authentication, final Model model) {
 
-        final String driveDetails = oneDriveService.testConnection(oAuth2RestTemplate);
+        final String driveDetails = oneDriveService.testConnection(oneDriveAdminOAuth2RestTemplate);
 
         oneDriveService.ensureAppRootFolderExists();
 

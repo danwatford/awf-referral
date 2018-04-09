@@ -3,6 +3,7 @@ package com.foomoo.awf;
 import com.foomoo.awf.config.AppAdminConfig;
 import com.foomoo.awf.config.AppOneDriveConfig;
 import com.foomoo.awf.oauth2.AccessTokenRepository;
+import com.foomoo.awf.oauth2.OAuth2RestTemplateFactory;
 import com.foomoo.awf.onedrive.OneDriveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
@@ -55,8 +56,19 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
     }
 
     @Bean
-    public OAuth2RestTemplate oauth2RestTemplate(OAuth2ClientContext oAuth2ClientContext, OAuth2ProtectedResourceDetails details) {
+    public OAuth2RestTemplate oneDriveAdminOAuth2RestTemplate(OAuth2ClientContext oAuth2ClientContext, OAuth2ProtectedResourceDetails details) {
         return new OAuth2RestTemplate(details, oAuth2ClientContext);
+    }
+
+    @Bean
+    public OAuth2RestTemplate oneDriveOAuth2RestTemplate(final OAuth2RestTemplateFactory oAuth2RestTemplateFactory) {
+        return oAuth2RestTemplateFactory.createOAuth2RestTemplate();
+    }
+
+    @Bean
+    public OAuth2RestTemplateFactory oAuth2RestTemplateFactory(final AccessTokenRepository accessTokenRepository,
+                                                               final OAuth2ProtectedResourceDetails details) {
+        return new OAuth2RestTemplateFactory(accessTokenRepository, details);
     }
 
     @Bean
@@ -74,9 +86,8 @@ public class ApplicationWebSecurityConfigurerAdapter extends WebSecurityConfigur
     @Bean
     @Scope("singleton")
     public OneDriveService oneDriveService(final AppOneDriveConfig oneDriveConfig,
-                                           final AccessTokenRepository accessTokenRepository,
-                                           final OAuth2ProtectedResourceDetails details) {
-        return new OneDriveService(oneDriveConfig, accessTokenRepository, details);
+                                           final OAuth2RestTemplateFactory oAuth2RestTemplateFactory) {
+        return new OneDriveService(oneDriveConfig, oAuth2RestTemplateFactory.createOAuth2RestTemplate(), oAuth2RestTemplateFactory);
     }
 
     /**
