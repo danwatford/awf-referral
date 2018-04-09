@@ -11,6 +11,7 @@ import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 
 public class OneDriveService {
@@ -89,22 +90,23 @@ public class OneDriveService {
         if (null == restTemplate) {
             throw new IllegalStateException("No access configured for OneDrive");
         }
+        try {
+            final URI baseUri = oneDriveConfig.getBaseUri();
+            final URI createUploadSessionUri = new URI(baseUri.getScheme(), baseUri.getAuthority(), String.format("%s/root:/%s/%s:/createUploadSession", baseUri.getPath(), oneDriveConfig.getFolder(), relativePath), null);
 
-        final String folderName = oneDriveConfig.getFolder();
-        final String uriString = oneDriveConfig.getBaseUri().toString() + "root:/" + folderName + "/" + relativePath + ":/createUploadSession";
-        final String encodedUriString = uriString.replaceAll(" ", "%20");
-        final URI createUploadSessionUri = URI.create(encodedUriString);
+            final ResponseEntity<UploadSession> uploadSessionResponse = restTemplate.postForEntity(createUploadSessionUri, Collections.emptyMap(), UploadSession.class);
 
-        final ResponseEntity<UploadSession> uploadSessionResponse = restTemplate.postForEntity(createUploadSessionUri, Collections.emptyMap(), UploadSession.class);
+            final URI uploadUrl = uploadSessionResponse.getBody().getUploadUrl();
 
-        final URI uploadUrl = uploadSessionResponse.getBody().getUploadUrl();
+            final HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Range", "bytes 0-" + (content.length - 1) + "/" + content.length);
 
-        final HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Range", "bytes 0-" + (content.length - 1) + "/" + content.length);
+            final HttpEntity<byte[]> httpRequest = new HttpEntity<>(content, headers);
 
-        final HttpEntity<byte[]> httpRequest = new HttpEntity<>(content, headers);
-
-        restTemplate.exchange(uploadUrl, HttpMethod.PUT, httpRequest, String.class);
+            restTemplate.exchange(uploadUrl, HttpMethod.PUT, httpRequest, String.class);
+        } catch (URISyntaxException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @JsonIgnoreProperties(ignoreUnknown = true)
