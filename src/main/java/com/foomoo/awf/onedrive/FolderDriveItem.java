@@ -1,6 +1,7 @@
 package com.foomoo.awf.onedrive;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
@@ -10,6 +11,7 @@ import java.util.Map;
 public class FolderDriveItem {
 
     @JsonProperty
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private String id;
 
     @JsonProperty
